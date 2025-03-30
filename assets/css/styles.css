@@ -294,10 +294,31 @@ section:nth-child(even) {
 
 /* Footer */
 footer {
-    background-color: var(--background-alt);
     padding: 2rem 0;
     text-align: center;
-    border-top: 1px solid var(--border);
+    color: #666;
+}
+
+.version-info {
+    font-size: 0.9em;
+    margin-top: 0.8rem;
+    color: #888;
+}
+
+.version-info a {
+    color: #666;
+    text-decoration: none;
+    padding: 0 2px;
+    transition: color 0.2s ease;
+}
+
+.version-info a:hover {
+    color: var(--primary);
+}
+
+.version-info .current {
+    color: #444;
+    font-weight: 500;
 }
 
 .version-switcher {
