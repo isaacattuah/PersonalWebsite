@@ -1,62 +1,73 @@
-# PersonalWebsite
+# Personal Website
 
-Back-end for my website [Visit my website](https://isaacattuah.com/)
+My personal website built with HTML, CSS, and vanilla JavaScript. Features a responsive design, dark mode toggle, and sections for projects, writing, and professional information.
 
 ## Table of Contents
 
-- [Introduction](#introduction)
 - [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Setup and Installation](#setup-and-installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
+- [Technology Stack](#technology-stack)
+- [Previous Versions](#previous-versions)
+- [Local Development](#local-development)
+- [Structure](#structure)
 - [License](#license)
-
-## Introduction
-
-This project is a personal resume website designed to showcase my professional experience, skills, and projects. It serves as an online portfolio to provide visitors with an overview of my background and accomplishments.
 
 ## Features
 
-- **Responsive Design**: Ensures optimal viewing experience across various devices and screen sizes.
-- **Interactive Elements**: Includes interactive components to enhance user engagement.
-- **Clean and Modern Layout**: Presents information in a structured and visually appealing manner.
+- 🌓 Dark/Light mode toggle with local storage persistence
+- 📱 Fully responsive design
+- 🎨 Minimal and clean UI
+- 🚀 Fast loading (no heavy frameworks)
+- 📝 Project showcase
+- ✍️ Writing section for blog links
+- 🤝 Professional links and contact information
 
-## Technologies Used
+## Technology Stack
 
-- **HTML5**: For structuring the content of the website.
-- **CSS3**: For styling and layout.
-- **JavaScript**: For interactive functionalities.
-- **SCSS**: For enhanced CSS with variables and mixins.
+- HTML5
+- CSS3 (CSS Variables for theming)
+- Vanilla JavaScript
+- Font Awesome Icons
+- Google Analytics
+- GitHub Pages for hosting
 
-## Setup and Installation
+## Previous Versions
 
-To set up and run this project locally, follow these steps:
+The site has gone through several iterations:
+- [Version 0](version_zero.html) - Initial release
+- [Version 1](version_one.html) - First redesign
+- Version 2 (Current) - Complete rebuild with dark mode support
 
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/isaacattuah/PersonalWebsite.git
-   cd PersonalWebsite
-   ```
+## Local Development
 
-2. **Open the Project**:
-   - Open the `index.html` file in your preferred web browser to view the website.
+```bash
+# Clone the repository
+git clone https://github.com/isaacattuah/PersonalWebsite.git
 
-## Usage
+# Navigate to the directory
+cd PersonalWebsite
 
-Feel free to explore the website to learn more about my professional journey. The website is organized into sections such as:
+# Open with VS Code
+code .
 
-- **About Me**: A brief introduction and overview.
-- **Experience**: Details of my work history and roles.
-- **Projects**: Showcase of notable projects with descriptions.
-- **Contact**: Information on how to get in touch with me.
+# Use a local server (e.g., with VS Code's Live Server extension)
+```
 
-## Contributing
+## Structure
 
-Contributions are welcome! If you have suggestions or improvements, please follow these steps:
+```
+PersonalWebsite/
+├── assets/
+│   ├── css/
+│   │   └── styles.css
+│   └── js/
+│       └── theme.js
+├── images/
+│   ├── me_new.png
+│   └── main-favicon.ico
+├── index.html
+└── README.md
+```
 
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/YourFeature`).
-3. Commit your changes (`git commit -m 'Add YourFeature'`).
-4. Push to the branch (`git push origin feature/YourFeature`).
-5. Open a Pull Request.
+## License
+
+MIT © Isaac Attuah
