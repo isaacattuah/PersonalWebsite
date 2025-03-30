@@ -2,15 +2,27 @@
 @import url("fontawesome-all.min.css");
 
 :root {
-    /* Color variables */
-    --primary: #007ACC;
-    --primary-hover: #005994;
-    --text: #333;
-    --heading: #111;
+    --primary: #007bff;
+    --primary-dark: #0056b3;
     --background: #ffffff;
-    --background-alt: #f7f7f7;
-    --border: #e0e0e0;
-    --nav-background: rgba(255, 255, 255, 0.95);
+    --background-alt: #f8f9fa;
+    --card-bg: #ffffff;
+    --text: #333333;
+    --text-light: #666666;
+    --border: #e9ecef;
+    --shadow: rgba(0, 0, 0, 0.08);
+    --nav-bg: rgba(255, 255, 255, 0.95);
+}
+
+[data-theme="dark"] {
+    --background: #1a1a1a;
+    --background-alt: #2d2d2d;
+    --card-bg: #2d2d2d;
+    --text: #ffffff;
+    --text-light: #e0e0e0;  /* Brighter gray for better contrast */
+    --border: #404040;
+    --shadow: rgba(0, 0, 0, 0.2);
+    --nav-bg: rgba(26, 26, 26, 0.95);  /* Darker, less transparent nav */
 }
 
 /* Base styles */
@@ -18,6 +30,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: background-color 0.15s ease, 
+                color 0.15s ease, 
+                border-color 0.15s ease, 
+                box-shadow 0.15s ease;
 }
 
 html {
@@ -27,8 +43,9 @@ html {
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     line-height: 1.6;
-    color: var(--text);
     background-color: var(--background);
+    color: var(--text);
+    transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 img {
@@ -68,7 +85,7 @@ a {
 }
 
 a:hover {
-    color: var(--primary-hover);
+    color: var(--primary-dark);
 }
 
 ul {
@@ -110,9 +127,11 @@ section:nth-child(even) {
     top: 0;
     left: 0;
     width: 100%;
-    background-color: var(--nav-background);
+    background-color: var(--nav-bg);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 100;
+    z-index: 1000;
     padding: 1rem 0;
 }
 
@@ -183,9 +202,13 @@ section:nth-child(even) {
     max-width: 600px;
     margin: 0 auto 2rem;
     line-height: 1.5;
-    color: #555;
+    color: var(--text-light);
+    font-weight: 400;
 }
 
+[data-theme="dark"] #home .subtitle {
+    opacity: 0.95;  /* Increase opacity for better visibility */
+}
 
 .btn-primary {
     background-color: var(--primary);
@@ -221,28 +244,42 @@ section:nth-child(even) {
 }
 
 .project-card {
-    background-color: white;
+    background-color: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 1.5rem;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: all 0.3s ease;
 }
 
 .project-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 20px var(--shadow);
+}
+
+.project-card h3 {
+    color: var(--text);
+    margin-bottom: 1rem;
+}
+
+.project-card p {
+    color: var(--text-light);
 }
 
 .tech-tags {
-    color: #666;
+    color: var(--text-light);
     font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+    margin: 1rem 0;
 }
 
 .project-link {
-    display: inline-block;
-    margin-top: 0.5rem;
+    color: var(--primary);
+    text-decoration: none;
     font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.project-link:hover {
+    color: var(--primary-dark);
 }
 
 /* Writing Section */
@@ -288,7 +325,7 @@ section:nth-child(even) {
 }
 
 .social-btn:hover {
-    background-color: var(--primary-hover);
+    background-color: var(--primary-dark);
     color: white;
 }
 
@@ -343,7 +380,7 @@ footer {
 }
 
 .version-link:hover {
-    background-color: var(--primary-hover);
+    background-color: var(--primary-dark);
 }
 
 .current-version {
@@ -373,6 +410,30 @@ footer {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     padding: 0.2rem;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.3s ease;
+    border-radius: 50%;
+}
+
+.theme-toggle:hover {
+    background-color: var(--background-alt);
+    transform: scale(1.1);
+}
+
+.theme-toggle i {
+    font-size: 1.2rem;
+}
+
+[data-theme="dark"] .theme-toggle i {
+    color: #ffd700;  /* Golden color for sun icon */
 }
 
 /* Responsive Design */
