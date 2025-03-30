@@ -1,16 +1,11 @@
-<!DOCTYPE HTML>
-<!--
-	Miniport by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<title>Isaac Attuah</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-	<link rel="stylesheet" href="assets/css/main.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isaac Attuah | AI/ML Customer Engineer</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="icon" href="images/main-favicon.ico" type="image/x-icon">
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-155985859-1"></script>
 	<script>
@@ -23,217 +18,183 @@
 
 		gtag('config', 'UA-155985859-1');
 	</script>
-
 </head>
+<body>
+    <!-- Navigation -->
+    <nav id="nav">
+        <div class="container nav-container">
+            <a href="#home" class="brand"><span class="initials">IA</span></a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#writing">Writing</a></li>
+                <li><a href="#links">Links</a></li>
+            </ul>
+        </div>
+    </nav>
 
-<body class="is-preload">
+    <!-- Hero Section -->
+    <section id="home">
+        <div class="container">
+            <h1>Isaac Attuah</h1>
+            <p class="subtitle">AI/ML Customer Engineer @ Google Cloud<br><br>
+            Building helpful solutions, sharing useful knowledge, and exploring new technology one demo at a time.</p>
+            <a href="#about" class="btn btn-primary">Learn More ↓</a>
+        </div>
+    </section>
 
-	<!-- Nav -->
-	<nav id="nav">
-		<ul class="container">
-			<li><a href="#top">Top</a></li>
-			<li><a href="#work">Work</a></li>
-			<li><a href="#portfolio">Portfolio</a></li>
-			<li><a href="#contact">Contact</a></li>
-			<li><a href="oldindex.html">Time Machine</a></li>
-		</ul>
-	</nav>
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2>About Me</h2>
+            <div class="content-wrapper">
+                <div class="profile-image">
+                    <span class="image fit"><img src="images/me_new.png" alt="Isaac Attuah" /></span>
+                </div>
+                <div class="about-text">
+                    <p>Hello! I'm an AI/ML Customer Engineer at Google Cloud, based in Atlanta, GA. My passion lies at the intersection of cloud computing, artificial intelligence, and software development. I thrive on helping startups and digital natives leverage powerful technologies like Google Cloud's AI Platform (Vertex AI), BigQuery, and Looker to solve real-world problems and drive innovation.</p>
+                    
+                    <p>With a background in Computer Science from the University of Miami (Cum Laude) and Kwame Nkrumah University of Science and Technology (First Class Honors), I bring a strong technical foundation. I enjoy tackling complex challenges, mentoring others, and continuously learning in this rapidly evolving field. My experience ranges from developing internal tools and dashboards to contributing significantly to customer success and deal value.</p>
+                    
+                    <p class="emphasis"><strong>Key Areas:</strong> Google Cloud Platform (GCP), Artificial Intelligence / Machine Learning, Data Analytics (BigQuery, Looker), Cloud Architecture, Python, Terraform.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-	<!-- Home -->
-	<article id="top" class="wrapper style1">
-		<div class="container">
-			<div class="row">
-				<div class="col-4 col-5-large col-12-medium">
-					<span class="image fit"><img src="images/me.png" alt="" /></span>
-				</div>
-				<div class="col-8 col-7-large col-12-medium">
-					<header>
-						<h1>Hi. I'm <strong>Isaac Attuah</strong>.</h1>
-					</header>
-					<p>A <strong> self-learning enthusiast</strong> and <u><a href="https://www.linkedin.com/in/isaacattuah/">AI/ML focused Customer Engineer at Google Cloud</a></u></p>
-					<a href="#work" class="button large scrolly">Learn about what I do</a>
-				</div>
-			</div>
-		</div>
-	</article>
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="container">
+            <h2>Selected Projects</h2>
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <h3>Customer Scenario Simulator</h3>
+                    <p>Developed a Google Cloud-hosted AI application using Python and the text-bison model to provide customer service training through interactive role-play scenarios and automated feedback.</p>
+                    <p class="tech-tags">Python | Google Cloud AI | GCP</p>
+                    <a href="https://github.com/isaacattuah/Customer-Scenario-Simulator/tree/fd64f1dbb3ef55145d214aad966b0193d536fae3" class="project-link" target="_blank">View on GitHub →</a>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <h3>Terraform CI/CD Pipeline Kit</h3>
+                    <p>Created a reusable Terraform script establishing a CI/CD pipeline for deploying sample applications efficiently onto Google Kubernetes Engine (GKE) and Cloud Run.</p>
+                    <p class="tech-tags">Terraform | CI/CD | GCP | GKE | Cloud Run</p>
+                    <a href="https://github.com/isaacattuah/ci-cd-pipeline" class="project-link" target="_blank">View on GitHub →</a>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="project-card">
+                    <h3>Music Through The Years</h3>
+                    <p>Built a web application leveraging the Spotify API with Python to visualize trends in popular music and artists over different time periods, aiding music enthusiasts.</p>
+                    <p class="tech-tags">Python | Spotify API | Web Development</p>
+                    <a href="https://github.com/isaacattuah/MusicThroughTheYears" class="project-link" target="_blank">View on GitHub →</a>
+                </div>
+                
+                <!-- Project 4 -->
+                <div class="project-card">
+                    <h3>Adinkra Adventures</h3>
+                    <p>Developed an educational puzzle game in C# designed to teach children about the meanings behind traditional West African Adinkra symbols through engaging stories and puzzles.</p>
+                    <p class="tech-tags">C# | Game Development</p>
+                    <a href="https://github.com/isaacattuah/Adinkra-Adventures" class="project-link" target="_blank">View on GitHub →</a>
+                </div>
+                
+                <!-- Project 5 -->
+                <div class="project-card">
+                    <h3>Duolingo for Plants</h3>
+                    <p>Created a Flutter mobile application that integrates with NatureServe data and Serp API images to help users identify and learn about various plant species across the U.S.</p>
+                    <p class="tech-tags">Flutter | Dart | Mobile Development | APIs</p>
+                    <a href="https://github.com/isaacattuah/plant_master_backend" class="project-link" target="_blank">View on GitHub →</a>
+                </div>
+                
+                <!-- Project 6 -->
+                <div class="project-card">
+                    <h3>Algorithm Implementations (CLRS)</h3>
+                    <p>Implemented various fundamental algorithms and data structures based on the "Introduction to Algorithms" (CLRS) textbook, primarily using JavaScript.</p>
+                    <p class="tech-tags">JavaScript | Algorithms | Data Structures</p>
+                    <a href="https://github.com/isaacattuah/CSC401-Algorithms" class="project-link" target="_blank">View on GitHub →</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-	<!-- Work -->
-	<article id="work" class="wrapper style2">
-		<div class="container">
-			<header>
-				<h2>Here's all the stuff I do.</h2>
-				<!-- <p></p> -->
-			</header>
-			<div class="row aln-center">
-				<div class="col-4 col-6-medium col-12-small">
-					<section class="box style1">
-						<span class="icon featured fa-comments"></span>
-						<h3>Blogging</h3>
-						<p>Currently a <a href="https://www.quora.com/profile/Isaac-Attuah-1">Quora Partner</a> occassionally answering questions on Christianity, Apple, Technology and Life in Ghana. I sometimes publish articles on <a href="https://medium.com/@isaacattuah">Medium</a>.</p>
-					</section>
-				</div>
-				<div class="col-4 col-6-medium col-12-small">
-					<section class="box style1">
-						<span class="icon solid featured fa-camera-retro"></span>
-						<h3>Social Media Marketing</h3>
-						<p>Using apps like Adobe Spark, Canva and Over, I create social media campaigns for clubs on campus, including <a href="https://www.instagram.com/umiamigospelchoir/">@umiamigospelchoir</a> and <a
-								href="https://www.instagram.com/dscumiami/">@dscumiami</a>.</p>
-					</section>
-				</div>
-				<div class="col-4 col-6-medium col-12-small">
-					<section class="box style1">
-						<span class="icon featured fa-file-code"></span>
-						<h3>Coding Projects</h3>
-						<p>Working on automated scripts and <a href="https://medium.com/processing-foundation/interview-with-2019-fellow-prince-steven-annor-ffb310e60401">open source projects</a> is something I love to do as a hobby. You can follow my <a
-								href="https://github.com/isaacattuah">Github</a> for more content that is downloable.</p>
-					</section>
-				</div>
-			</div>
-			<footer>
-				<a href="#portfolio" class="button large scrolly">See some of my recent work</a>
-			</footer>
-		</div>
-	</article>
+    <!-- Writing Section -->
+    <section id="writing">
+        <div class="container">
+            <h2>Writing & Insights</h2>
+            <p>I believe in sharing knowledge and occasionally write about technology, cloud, AI, career development, and other interests. You can find my thoughts on these platforms:</p>
+            
+            <ul class="writing-links">
+                <li><a href="https://www.quora.com/profile/Isaac-Attuah-1" target="_blank">My Answers on Quora  →</a></li>
+                <li><a href="https://medium.com/@isaacattuah" target="_blank">Articles on Medium →</a></li>
+                <li><a href="https://www.linkedin.com/in/isaacattuah/" target="_blank">Posts on LinkedIn →</a></li>
+            </ul>
+            
+            <p>Topics often include Cloud Computing insights, AI/ML trends, programming tips, and reflections on life and learning.</p>
+        </div>
+    </section>
 
-	<!-- Portfolio -->
-	<article id="portfolio" class="wrapper style3">
-		<div class="container">
-			<header>
-				<h2>Here’s some stuff I made recently.</h2>
-				<p>And their corresponding development tools</p>
-			</header>
-			<div class="row">
-				<div class="col-4 col-6-medium col-12-small">
-					<article class="box style2">
-						<a href="https://dscumiami.com/" class="image featured"><img src="images/dsc.png" alt="" /></a>
-						<h3><a href="https://dscumiami.com/">DSC UMiami Website</a></h3>
-						<p>HTML | CSS | JavaScript</p>
-					</article>
-				</div>
-				<div class="col-4 col-6-medium col-12-small">
-					<article class="box style2">
-						<a href="https://pcicompliance.miami.edu/" class="image featured"><img src="images/umiami.png" alt="" /></a>
-						<h3></br /></br /><a href="https://pcicompliance.miami.edu/">UMiami PCI Website</br /></a></h3>
-						<p>Cacade CMS</p>
-					</article>
-				</div>
-				<div class="col-4 col-6-medium col-12-small">
-					<article class="box style2">
-						<a href="https://github.com/isaacattuah/CSC401-Algorithms" class="image featured"><img src="images/dice.png" alt="" /></a>
-						<h3><br /><a href="https://github.com/isaacattuah/CSC401-Algorithms">CLRS Algorithm Implementations<br /></a></h3>
-						<p>JavaScript</p>
-					</article>
-				</div>
-				<div class="col-4 col-6-medium col-12-small">
-					<article class="box style2">
-						<a href="https://gnlorg.wordpress.com/" class="image featured"><img src="images/gifts.png" alt=""></a>
-						<h3><a href="https://gnlorg.wordpress.com/"><br />GNL Website </br /></a></h3>
-						<p>WordPress</p>
-					</article>
-				</div>
-				<div class="col-4 col-6-medium col-12-small">
-					<article class="box style2">
-						<a href="https://github.com/isaacattuah/Processing-Pong-Game" class="image featured"><img src="images/pong.png" alt=""></a>
-						<h3><a href="https://github.com/isaacattuah/Processing-Pong-Game">Classic Pong Game</a></h3>
-						<p>Processing</p>
-					</article>
-				</div>
-				<div class="col-4 col-6-medium col-12-small">
-					<article class="box style2">
-						<a href="https://github.com/isaacattuah/CSVFolderCreator" class="image featured"><img src="images/file.png" alt=""></a>
-						<h3><a href="https://github.com/isaacattuah/CSVFolderCreator">CSV Folder Creator</a></h3>
-						<p>Python</p>
-					</article>
-				</div>
-				<div class = "container">
-					<header>
-						<br />
-							<h3>Check out my <a href="https://docs.google.com/document/d/1EyAMBDKFZllOAJzON1glSD8Yo8AhkFOQifTpaNQ_IcY/edit?usp=sharing"><u>resume</u></a> for more details</h3>
-					</header>
-				</div>
+    <!-- Links Section -->
+    <section id="links">
+        <div class="container">
+            <h2>Connect & Find More</h2>
+            <p>Let's connect! You can find my professional profiles, code repositories, and resume below.</p>
+            
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/isaacattuah/" class="social-btn" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/isaacattuah" class="social-btn" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://twitter.com/IsaacAttuah" class="social-btn" target="_blank">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.quora.com/profile/Isaac-Attuah-1" class="social-btn" target="_blank">
+                    <i class="fab fa-quora"></i>
+                </a>
+                <a href="mailto:isaacattuah@gmail.com" class="social-btn">
+                    <i class="far fa-envelope"></i>
+                </a>
+                <a href="https://docs.google.com/document/d/1EyAMBDKFZllOAJzON1glSD8Yo8AhkFOQifTpaNQ_IcY/edit?usp=sharing" class="social-btn" target="_blank">
+                    <i class="far fa-file-pdf"></i>
+                </a>
+            </div>
+        </div>
+    </section>
 
-			</div>
-			<footer>
-				<a href="#contact" class="button large scrolly">Get in touch with me</a>
-			</footer>
-		</div>
-	</article>
+    <!-- Resume Section -->
+    <section id="resume">
+        <div class="container">
+            <h2>Resume</h2>
+            <div class="resume-box">
+                <p>View my professional experience, education, and skills in detail.</p>
+                <a href="https://docs.google.com/document/d/1EyAMBDKFZllOAJzON1glSD8Yo8AhkFOQifTpaNQ_IcY/edit?usp=sharing" class="resume-btn" target="_blank">
+                    <i class="far fa-file-pdf"></i>
+                    <span>View Full Resume</span>
+                </a>
+            </div>
+        </div>
+    </section>
 
-	<!-- Contact -->
-	<article id="contact" class="wrapper style4">
-		<div class="container medium">
-			<header>
-				<h2>Want to send me a message?</h2>
-				<p>Fill and submit the form below</p>
-			</header>
-			<div class="row">
-				<div class="col-12">
-					<form method="POST" action="https://formspree.io/xyyeyrpv">
-						<div class="row">
-							<div class="col-6 col-12-small">
-								<input type="text" name="name" id="name" placeholder="Name" />
-							</div>
-							<div class="col-6 col-12-small">
-								<input type="text" name="email" id="email" placeholder="Email" />
-							</div>
-							<div class="col-12">
-								<input type="text" name="subject" id="subject" placeholder="Subject" />
-							</div>
-							<div class="col-12">
-								<textarea name="message" id="message" placeholder="Message"></textarea>
-							</div>
-							<div class="col-12">
-								<ul class="actions">
-									<li><input type="submit" value="Send Message" /></li>
-									<li><input type="reset" value="Clear Form" class="alt" /></li>
-								</ul>
-							</div>
-						</div>
-					</form>
-				</div>
-				<div class="col-12">
-					<hr />
-					<h3>Find me on ...</h3>
-					<ul class="social">
-						<li><a href="https://twitter.com/IsaacAttuah" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="https://www.facebook.com/isaacattuah" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-						<!-- <li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li> -->
-						<li><a href="https://www.linkedin.com/in/isaacattuah/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-						<li><a href="https://www.instagram.com/isaacattuah/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-						<!-- <li><a href="#" class="icon brands fa-google-plus"><span class="label">Google+</span></a></li> -->
-						<li><a href="https://github.com/isaacattuah" class="icon brands fa-github"><span class="label">Github</span></a></li>
-						<!--
-								<li><a href="#" class="icon solid fa-rss"><span>RSS</span></a></li>
-								<li><a href="#" class="icon brands fa-instagram"><span>Instagram</span></a></li>
-								<li><a href="#" class="icon brands fa-foursquare"><span>Foursquare</span></a></li>
-								<li><a href="#" class="icon brands fa-skype"><span>Skype</span></a></li>
-								<li><a href="#" class="icon brands fa-soundcloud"><span>Soundcloud</span></a></li>
-								<li><a href="#" class="icon brands fa-youtube"><span>YouTube</span></a></li>
-								<li><a href="#" class="icon brands fa-blogger"><span>Blogger</span></a></li>
-								<li><a href="#" class="icon brands fa-flickr"><span>Flickr</span></a></li>
-								<li><a href="#" class="icon brands fa-vimeo"><span>Vimeo</span></a></li>
-								-->
-					</ul>
-					<hr />
-				</div>
-			</div>
-			<footer>
-				<ul id="copyright">
-					<li>&copy; 2020 Isaac Attuah. All rights reserved.</li>
-					<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-				</ul>
-			</footer>
-		</div>
-	</article>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+    <!-- JavaScript for smooth scrolling and current year -->
+    <script>
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
 
-	<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.scrolly.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
-
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
-
 </html>
