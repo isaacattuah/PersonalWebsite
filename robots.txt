@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /demos/
+
+Sitemap: https://isaacattuah.com/sitemap.xml

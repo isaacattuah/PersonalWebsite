@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vertex AI Studio or Google AI Studio? Pick by stage, not by feature list | Isaac Attuah</title>
+  <meta name="description" content="A companion to my most-read piece for Google Cloud for Startups. The products have changed since 2024, but the way to choose between a prototyping sandbox and a production platform has not.">
+  <link rel="canonical" href="https://medium.com/google-cloud-for-startups/vertex-ai-studio-vs-google-ai-studio-choosing-the-right-ai-tool-for-your-startup-6e0351405630">
+  <meta name="author" content="Isaac Attuah">
+  <meta property="og:site_name" content="Isaac Attuah">
+  <meta property="og:title" content="Vertex AI Studio or Google AI Studio? Pick by stage, not by feature list | Isaac Attuah">
+  <meta property="og:description" content="A companion to my most-read piece for Google Cloud for Startups. The products have changed since 2024, but the way to choose between a prototyping sandbox and a production platform has not.">
+  <meta property="og:url" content="https://isaacattuah.com/writing/vertex-ai-studio-vs-google-ai-studio/">
+  <meta property="og:image" content="https://isaacattuah.com/images/og.png">
+  <meta property="og:type" content="article">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Isaac Kofi Attuah, AI/ML Customer Engineer for startups at Google Cloud">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#f2f5f1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f211b" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="../../images/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../images/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="../../images/apple-touch-icon.png">
+  <link rel="manifest" href="../../site.webmanifest">
+  <link rel="alternate" type="application/rss+xml" title="Isaac Attuah: Writing" href="../../feed.xml">
+  <link rel="preload" href="../../assets/fonts/bricolage-grotesque-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <script src="../../assets/js/site.js" defer></script>
+  <meta property="article:published_time" content="2024-07-08">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../../">Isaac Attuah</a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="../../#systems">Work</a>
+        <a href="../../writing/" aria-current="page">Writing</a>
+        <a href="../../#about">About</a>
+        <a href="../../#contact">Contact</a>
+      </nav>
+      <div class="site-controls">
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="post">
+      <header class="post-header">
+        <div class="wrap">
+          <div class="post-column">
+            <h1>Vertex AI Studio or Google AI Studio? Pick by stage, not by feature list</h1>
+            <p class="post-meta"><time datetime="2024-07-08">July 8, 2024</time>, 2 minute read</p>
+            <p class="post-summary">A companion to my most-read piece for Google Cloud for Startups. The products have changed since 2024, but the way to choose between a prototyping sandbox and a production platform has not.</p>
+            <p class="post-origin">This is a companion to a piece published on Google Cloud for Startups on Medium. <a href="https://medium.com/google-cloud-for-startups/vertex-ai-studio-vs-google-ai-studio-choosing-the-right-ai-tool-for-your-startup-6e0351405630" rel="noopener">Read the original</a>.</p>
+          </div>
+        </div>
+      </header>
+      <div class="wrap">
+        <div class="post-column">
+          
+          <div class="prose">
+<p>In 2024 the question I heard most from founders was some version of: &quot;Google has two AI studios. Which one is mine?&quot; I wrote the answer down for Google Cloud for Startups, and it has since been read more than 9,700 times.</p>
+<p>A warning before the summary. The original compares specific features as they stood in July 2024, and both products have moved a long way since. Check the current documentation for what each one supports today. The decision underneath the feature table is the part that lasted.</p>
+<h2 id="two-tools-for-two-moments">Two tools for two moments</h2>
+<p><strong>Google AI Studio is where you find out if the idea works.</strong> It is a web-based sandbox built for speed. You sign in, try prompts, and have a prototype the same afternoon.</p>
+<p><strong>Vertex AI Studio is where you make it something customers can rely on.</strong> It sits inside Google Cloud, next to your data, your identity controls and your billing. It exists for the things a prototype does not need and a product cannot live without.</p>
+<h2 id="the-questions-that-decide-it">The questions that decide it</h2>
+<p>When a startup asks me which to use, I ask four things back.</p>
+<ol><li><strong>Who will use what you build?</strong> If the answer is &quot;me, this week,&quot; start in the sandbox. If it is &quot;thousands of customers,&quot; you need the production platform.</li><li><strong>What data goes through it?</strong> The moment real customer data is involved, enterprise security and compliance controls stop being optional.</li><li><strong>Will you need to adapt the model?</strong> Tuning, distillation and the MLOps tooling around them live on the platform side.</li><li><strong>How much traffic, and how predictable?</strong> Sandbox quotas are tight by design. Platform quotas are set per project and region, and can be raised.</li></ol>
+<h2 id="what-i-tell-founders-now">What I tell founders now</h2>
+<p>Start in the sandbox. Move when one of those four answers changes, and not before. The mistake I see is rarely choosing the wrong tool. It is staying in the prototype tool six months after the product became real, or building production infrastructure for an idea nobody has validated yet.</p>
+<p>Both tools let you export your work as code, so the move is a step and not a rewrite.</p>
+          </div>
+          <nav class="pager" aria-label="More writing"><a class="pager-newer" href="../four-steps-for-startups-multi-agent-systems/"><span>Newer</span>Notes from building the agent behind &quot;Four steps for startups to build multi-agent systems&quot;</a></nav>
+          <p class="post-end"><a href="../">All writing</a></p>
+        </div>
+      </div>
+    </article>
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <h2 id="contact-title">Building with agents, or stuck choosing a model? Write to me.</h2>
+        <a class="contact-email" href="mailto:isaacattuah@gmail.com">isaacattuah@gmail.com</a>
+        <ul class="contact-links">
+          <li><a href="https://www.linkedin.com/in/isaacattuah/" rel="noopener me">LinkedIn</a></li>
+          <li><a href="https://github.com/isaacattuah" rel="noopener me">GitHub</a></li>
+          <li><a href="https://medium.com/@isaacattuah" rel="noopener me">Medium</a></li>
+          <li><a href="https://www.quora.com/profile/Isaac-Attuah-1" rel="noopener me">Quora</a></li>
+          <li><a href="https://docs.google.com/document/d/1EyAMBDKFZllOAJzON1glSD8Yo8AhkFOQifTpaNQ_IcY/edit?usp=sharing" rel="noopener">Resume</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <section class="time-machine" aria-labelledby="tm-title">
+        <h2 id="tm-title">Time machine: every version of this site still runs. Each opens in a new tab</h2>
+        <ol class="versions">
+          <li><a href="../../legacy/v0/" target="_blank" rel="noopener">v0, 2019</a><span>Hand-written HTML and tables</span></li>
+          <li><a href="../../legacy/v1/" target="_blank" rel="noopener">v1, 2020</a><span>The student portfolio</span></li>
+          <li><a href="../../legacy/v2/" target="_blank" rel="noopener">v2, 2025</a><span>Single page with dark mode</span></li>
+          <li aria-current="true"><strong>v3, 2026</strong><span>You are here</span></li>
+        </ol>
+      </section>
+      <div class="footer-meta">
+        <p>&copy; <span data-year>2026</span> Isaac Kofi Attuah. Opinions are my own, not my employer's.</p>
+        <p><a href="../../feed.xml">RSS feed</a></p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

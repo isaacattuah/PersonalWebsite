@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" data-demo="stack-blue">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stack in blue | Isaac Attuah</title>
+  <meta name="description" content="Isaac Attuah is an AI/ML Customer Engineer for startups at Google Cloud in Atlanta. He helps AI-native teams with multi-agent architecture, model selection, inference capacity and data platforms.">
+  <meta name="robots" content="noindex">
+  <meta name="author" content="Isaac Attuah">
+  <meta property="og:site_name" content="Isaac Attuah">
+  <meta property="og:title" content="Isaac Attuah, AI/ML Customer Engineer for startups">
+  <meta property="og:description" content="Isaac Attuah is an AI/ML Customer Engineer for startups at Google Cloud in Atlanta. He helps AI-native teams with multi-agent architecture, model selection, inference capacity and data platforms.">
+  <meta property="og:url" content="https://isaacattuah.com/">
+  <meta property="og:image" content="https://isaacattuah.com/images/og.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#f2f5f1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f211b" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="../../images/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../images/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="../../images/apple-touch-icon.png">
+  <link rel="manifest" href="../../site.webmanifest">
+  <link rel="alternate" type="application/rss+xml" title="Isaac Attuah: Writing" href="../../feed.xml">
+  <link rel="preload" href="../../assets/fonts/bricolage-grotesque-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <script src="../../assets/js/site.js" defer></script>
+<style>
+/* Stack in blue: the same system with the green family swapped for blue. Comparison only. */
+:root{--ground:#f1f4f9;--ink:#101c33;--ink-soft:#44536c;--line:#c7d0df;--green:#1a4f96;--gold-ink:#101c33;--focus:#b3401f;--code-bg:#e3e9f2;--layer-1:#dbe6f6;--layer-2:#b0c9ec;--layer-3:#1d5cab;--layer-4:#0d2c58;--layer-ink-light:#0f1c33;--layer-ink-dark:#f1f5fb}
+:root[data-theme="dark"]{--ground:#0d1a2c;--surface:#14253b;--ink:#e8eef7;--ink-soft:#a6b4c9;--line:#2a3d58;--green:#9cc3f5;--focus:#f2a07e;--code-bg:#18293f;--layer-1:#dbe6f6;--layer-2:#a5c2ea;--layer-3:#2a6cc0;--layer-4:#173f78}
+@media (prefers-color-scheme:dark){:root:not([data-theme]){--ground:#0d1a2c;--surface:#14253b;--ink:#e8eef7;--ink-soft:#a6b4c9;--line:#2a3d58;--green:#9cc3f5;--focus:#f2a07e;--code-bg:#18293f;--layer-2:#a5c2ea;--layer-3:#2a6cc0;--layer-4:#173f78}}
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="./">Isaac Attuah</a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#systems">Work</a>
+        <a href="../../writing/">Writing</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="site-controls">
+        <button class="view-toggle" type="button" data-view-toggle aria-pressed="false" hidden>TL;DR</button>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <div data-view="full">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap">
+        <div>
+          <h1 id="hero-title">I help AI startups get agents out of the demo and into production.</h1>
+          <p class="hero-lead">I'm Isaac Kofi Attuah, an AI/ML Customer Engineer on the Startups team at Google Cloud in Atlanta. Founders and engineering leaders bring me in for the hard middle of an AI build: how the agents fit together, which model earns its cost, and whether the capacity will be there on launch day.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="../../writing/">Read my writing</a>
+            <a class="button button-quiet" href="#contact">Get in touch</a>
+          </div>
+        </div>
+        <img class="portrait" src="../../images/portrait-640.webp" srcset="../../images/portrait-320.webp 320w, ../../images/portrait-640.webp 640w" sizes="(max-width: 52rem) 7rem, 18rem" width="640" height="640" alt="Isaac Attuah, smiling, wearing clear-framed glasses">
+      </div>
+    </section>
+
+    <section class="stack-section" aria-labelledby="stack-title">
+      <div class="wrap">
+        <div class="stack-intro">
+          <h2 id="stack-title">Where I work in the stack</h2>
+          <p>From what the user touches down to where the data lives.</p>
+        </div>
+        <ol class="stack">
+          <li class="layer">
+            <h3>Agents</h3>
+            <p>Multi-agent architectures: who orchestrates, which steps stay deterministic, and how state is kept from leaking between tasks.</p>
+            <p class="layer-tools">Vertex AI Agent Builder, Gemini API</p>
+          </li>
+          <li class="layer">
+            <h3>Models</h3>
+            <p>Evaluation and selection. A representative eval on your own workload, then the smallest model that passes it.</p>
+            <p class="layer-tools">Model Garden, Gemini, Claude on Vertex AI</p>
+          </li>
+          <li class="layer">
+            <h3>Capacity</h3>
+            <p>GPU and TPU capacity and the inference infrastructure around it, planned before the traffic arrives.</p>
+            <p class="layer-tools">Provisioned Throughput, GKE, Cloud Run, Terraform</p>
+          </li>
+          <li class="layer">
+            <h3>Data</h3>
+            <p>The analytics and transactional platforms that agents read from and write to.</p>
+            <p class="layer-tools">BigQuery, Spanner, Looker</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="enablement" aria-labelledby="enablement-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="enablement-title">From the field back to product, and out to other engineers</h2>
+          <p>What I learn with customers should not stay in one account.</p>
+        </div>
+        <div class="section-body">
+          <table class="ledger" aria-labelledby="enablement-title">
+            <tbody>
+              <tr><th scope="row">4,600+</th><td>Customer Engineers onboarded with the Google Cloud labs I built.</td></tr>
+              <tr><th scope="row">3,000+</th><td>Cloud go-to-market staff using my certification guides.</td></tr>
+              <tr><th scope="row">550+</th><td>attendees at the Agentic AI workshops I co-led at Atlanta Tech Week 2026.</td></tr>
+              <tr><th scope="row">360+</th><td>engineers who studied from my Professional ML Engineer guide. I also led a cohort of 15 Customer Engineers through the exam.</td></tr>
+              <tr><th scope="row">$50K+</th><td>cut from enterprise BigQuery costs, alongside ML and bug-tracking Looker dashboards shipped for large enterprise customers.</td></tr>
+            </tbody>
+          </table>
+          <p class="ledger-note">I also write customer-impact reports for leadership: what a Vertex AI tier or quota change does to real workloads, and where adoption is getting stuck.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="systems" aria-labelledby="systems-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="systems-title">Selected systems and civic work</h2>
+          <p>Things I designed, led or built.</p>
+        </div>
+        <div class="section-body">
+          <ul class="systems">
+            <li class="system">
+              <h3>Customer Scenario Simulator II</h3>
+              <p class="system-role">Designer and builder</p>
+              <p>A practice tool for Customer Engineers. One agent plays a customer with a hidden objective you have to uncover through discovery. A second agent grades the conversation against a rubric, with evidence for every score, and BigQuery tracks how your skills move over time.</p>
+              <p class="system-meta">Claude on Vertex AI, FastAPI, Cloud Run, BigQuery. <a href="https://github.com/isaacattuah/Customer-Scenario-Simulator-v2" rel="noopener">Code on GitHub</a>. <a href="../../writing/building-a-practice-customer/">How it works</a>.</p>
+            </li>
+            <li class="system">
+              <h3>Internal Agentic Compliance Assistant</h3>
+              <p class="system-role">Product and tech lead, team of two engineers</p>
+              <p>A workflow agent that lives in Google Chat and keeps five regional pods on top of a recurring compliance process. Pods reached 98 to 100 percent compliance, the team got back roughly 900 hours a year, and the project was sponsored for an org-wide pilot.</p>
+              <p class="system-meta">Gemini, Apps Script, Google Chat.</p>
+            </li>
+            <li class="system">
+              <h3>Google.org civic AI fellowships</h3>
+              <p class="system-role">AI Coach, 2026. 20% Software Engineer, 2024</p>
+              <p>In 2026 I coached in the Google.org Accelerator: AI for Government Innovation, advising Code for America and co-leading the design sprint at the D.C. kickoff. In 2024 I spent a fifth of my time building a generative AI business-licensing chatbot and web portal for the 3,000+ businesses of Macon-Bibb County, Georgia.</p>
+              <p class="system-meta">Gemini, Google Cloud.</p>
+            </li>
+            <li class="system">
+              <h3>Terraform CI/CD Pipeline Kit</h3>
+              <p class="system-role">Author</p>
+              <p>A reusable Terraform blueprint that stands up a CI/CD pipeline deploying to both GKE and Cloud Run, so a new team starts with delivery already working.</p>
+              <p class="system-meta">Terraform, Cloud Build, GKE, Cloud Run. <a href="https://github.com/isaacattuah/ci-cd-pipeline" rel="noopener">Code on GitHub</a>.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="writing" aria-labelledby="writing-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="writing-title">Writing</h2>
+          <p>Field notes on agents, model fit and shipping.</p>
+        </div>
+        <div class="section-body">
+      <!-- posts:start -->
+      <ul class="post-list">
+      <li class="post-row"><time datetime="2026-11-11">Nov 2026</time><div class="post-row-body"><h3><a href="../../writing/building-a-practice-customer/">Building a practice customer: persona agents, hidden objectives, and a judge you can trust</a></h3><p>How Customer Scenario Simulator II works: one agent plays a customer who is holding something back, a second grades the conversation against a rubric, and a small eval harness checks that the grader deserves to be believed.</p><span class="post-kind">Deep dive</span></div></li>
+      <li class="post-row"><time datetime="2026-07-29">Jul 2026</time><div class="post-row-body"><h3><a href="../../writing/you-dont-always-need-a-frontier-model/">You don&#x27;t always need a frontier model. You need one that fits.</a></h3><p>The short version of my Medium piece on right-sized, open-weight models: the real trade is generality against fit, and the only way to settle it is an evaluation on your own workload.</p><span class="post-kind">Companion</span></div></li>
+      <li class="post-row"><time datetime="2025-11-14">Nov 2025</time><div class="post-row-body"><h3><a href="../../writing/four-steps-for-startups-multi-agent-systems/">Notes from building the agent behind &quot;Four steps for startups to build multi-agent systems&quot;</a></h3><p>My colleague Oluwamayowa Awojuyigbe wrote up a multi-agent build I helped architect. These are the four lessons from that project I now repeat to almost every startup I work with.</p><span class="post-kind">Companion</span></div></li>
+      </ul>
+      <!-- posts:end -->
+          <p class="section-more"><a href="../../writing/">All writing</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="about-title">Background</h2>
+        </div>
+        <div class="section-body">
+          <p>I joined Google in June 2022 as a Cloud Technical Resident and moved onto the Startups team as an AI/ML Customer Engineer in May 2023. Before that I studied computer science at KNUST in Ghana and then at the University of Miami. In 2026 I finished a master's in artificial intelligence while working full time.</p>
+          <p>The through line is teaching. Most of what I build ends up as a lab, a guide, a workshop or a practice tool for someone else.</p>
+          <div class="facts">
+            <div>
+              <h3>Education</h3>
+              <ul>
+                <li>MSc. Artificial Intelligence<small>University of the Cumberlands, 2026. GPA 4.0</small></li>
+                <li>BSc. Computer Science<small>University of Miami, 2022. Cum Laude, GPA 3.907. Prior study at KNUST</small></li>
+              </ul>
+            </div>
+            <div>
+              <h3>Google Cloud certifications</h3>
+              <ul>
+                <li><a href="https://www.credly.com/badges/81c1ce43-d8e4-4efe-9da1-9f3ef0329c97/public_url" rel="noopener">Professional Machine Learning Engineer</a></li>
+                <li><a href="https://www.credly.com/badges/06cd3ca0-5eff-4865-aec7-f7851a70e32b/public_url" rel="noopener">Professional Cloud Architect</a></li>
+                <li><a href="https://www.credly.com/badges/c6a411d0-c5ef-4c21-9de0-02b64d5d2756/public_url" rel="noopener">Professional Data Engineer</a></li>
+                <li><a href="https://www.credly.com/badges/20f67abf-6c94-4974-910d-6a0dbf2090a2/public_url" rel="noopener">Associate Cloud Engineer</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    </div>
+
+    <article class="tldr" id="tldr" data-view="tldr" aria-labelledby="tldr-title" hidden>
+      <div class="wrap">
+        <div class="tldr-column">
+          <h1 id="tldr-title">The short version</h1>
+          <p class="tldr-lead">I'm Isaac Kofi Attuah, an AI/ML Customer Engineer on the Startups team at Google Cloud in Atlanta. I help AI-native startups get agents out of the demo and into production.</p>
+          <ul class="tldr-points">
+            <li><strong>What I do.</strong> I work across four layers of an AI product: multi-agent architecture, model evaluation and selection, GPU and TPU capacity, and the data platforms underneath.</li>
+            <li><strong>What I've built.</strong> <a href="https://github.com/isaacattuah/Customer-Scenario-Simulator-v2" rel="noopener">Customer Scenario Simulator II</a>, a multi-agent practice tool with a rubric-based judge. An internal compliance agent that took five regional pods to 98 to 100 percent compliance and returned about 900 hours a year. A licensing chatbot for 3,000+ businesses in Macon-Bibb County through Google.org.</li>
+            <li><strong>Who I've taught.</strong> 4,600+ Customer Engineers through my onboarding labs, 3,000+ colleagues through my certification guides, and 550+ people at Atlanta Tech Week 2026.</li>
+            <li><strong>Credentials.</strong> MSc. Artificial Intelligence (2026, GPA 4.0), BSc. Computer Science from the University of Miami, and four Google Cloud certifications.</li>
+          </ul>
+          <h2>Latest writing</h2>
+          <!-- posts-compact:start -->
+          <ul class="tldr-posts">
+            <li><a href="../../writing/building-a-practice-customer/">Building a practice customer: persona agents, hidden objectives, and a judge you can trust</a> <time datetime="2026-11-11">Nov 2026</time></li>
+            <li><a href="../../writing/you-dont-always-need-a-frontier-model/">You don&#x27;t always need a frontier model. You need one that fits.</a> <time datetime="2026-07-29">Jul 2026</time></li>
+            <li><a href="../../writing/four-steps-for-startups-multi-agent-systems/">Notes from building the agent behind &quot;Four steps for startups to build multi-agent systems&quot;</a> <time datetime="2025-11-14">Nov 2025</time></li>
+          </ul>
+          <!-- posts-compact:end -->
+          <p class="tldr-more"><button class="button button-quiet" type="button" data-view-full>Read the full page</button></p>
+        </div>
+      </div>
+    </article>
+
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <h2 id="contact-title">Building with agents, or stuck choosing a model? Write to me.</h2>
+        <a class="contact-email" href="mailto:isaacattuah@gmail.com">isaacattuah@gmail.com</a>
+        <ul class="contact-links">
+          <li><a href="https://www.linkedin.com/in/isaacattuah/" rel="noopener me">LinkedIn</a></li>
+          <li><a href="https://github.com/isaacattuah" rel="noopener me">GitHub</a></li>
+          <li><a href="https://medium.com/@isaacattuah" rel="noopener me">Medium</a></li>
+          <li><a href="https://www.quora.com/profile/Isaac-Attuah-1" rel="noopener me">Quora</a></li>
+          <li><a href="https://docs.google.com/document/d/1EyAMBDKFZllOAJzON1glSD8Yo8AhkFOQifTpaNQ_IcY/edit?usp=sharing" rel="noopener">Resume</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <section class="time-machine" aria-labelledby="tm-title">
+        <h2 id="tm-title">Time machine: every version of this site still runs. Each opens in a new tab</h2>
+        <ol class="versions">
+          <li><a href="../../legacy/v0/" target="_blank" rel="noopener">v0, 2019</a><span>Hand-written HTML and tables</span></li>
+          <li><a href="../../legacy/v1/" target="_blank" rel="noopener">v1, 2020</a><span>The student portfolio</span></li>
+          <li><a href="../../legacy/v2/" target="_blank" rel="noopener">v2, 2025</a><span>Single page with dark mode</span></li>
+          <li aria-current="true"><strong>v3, 2026</strong><span>You are here</span></li>
+        </ol>
+      </section>
+      <div class="footer-meta">
+        <p>&copy; <span data-year>2026</span> Isaac Kofi Attuah. Opinions are my own, not my employer's.</p>
+        <p><a href="../../feed.xml">RSS feed</a></p>
+      </div>
+    </div>
+  </footer>
+<script src="../switcher.js"></script>
+</body>
+</html>

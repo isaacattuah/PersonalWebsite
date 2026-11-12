@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Design directions | isaacattuah.com</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="../images/favicon.ico">
+  <style>
+    :root { color-scheme: light dark; --bg: #f4f4f2; --panel: #fff; --ink: #161616; --soft: #5c5c5c; --line: #d6d6d2; --on: #161616; --on-ink: #fff; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #141414; --panel: #1e1e1e; --ink: #f1f1f1; --soft: #a8a8a8; --line: #343434; --on: #f1f1f1; --on-ink: #141414; } }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { margin: 0; display: grid; grid-template-rows: auto 1fr; background: var(--bg); color: var(--ink); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    header { background: var(--panel); border-bottom: 1px solid var(--line); padding: 12px 16px; display: grid; gap: 10px; }
+    .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; justify-content: space-between; }
+    h1 { font-size: 15px; margin: 0; font-weight: 600; }
+    h1 a { color: var(--soft); font-weight: 400; margin-left: 8px; }
+    .group { display: flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; overflow-x: auto; max-width: 100%; }
+    button { font: inherit; font-weight: 500; border: 0; background: transparent; color: var(--ink); padding: 7px 14px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
+    button[aria-pressed="true"], button[aria-selected="true"] { background: var(--on); color: var(--on-ink); }
+    button:focus-visible, a:focus-visible { outline: 3px solid #2a7de1; outline-offset: 2px; }
+    #about { margin: 0; color: var(--soft); max-width: 70ch; }
+    #about strong { color: var(--ink); font-weight: 600; }
+    a { color: inherit; }
+    main { min-height: 0; display: grid; justify-items: center; padding: 16px; overflow: auto; }
+    iframe { width: 100%; height: 100%; min-height: 420px; border: 1px solid var(--line); border-radius: 10px; background: #fff; transition: max-width 200ms ease; }
+    @media (prefers-reduced-motion: reduce) { iframe { transition: none; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="row">
+      <h1>Design directions <a href="../">Back to the site</a></h1>
+      <div class="group" role="group" aria-label="Preview width">
+        <button type="button" data-width="100%" aria-pressed="true">Desktop</button>
+        <button type="button" data-width="768px" aria-pressed="false">Tablet</button>
+        <button type="button" data-width="375px" aria-pressed="false">Phone</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="group" role="tablist" aria-label="Direction">
+        <button type="button" role="tab" data-id="flagship" aria-selected="true">Flagship: Stack</button>
+        <button type="button" role="tab" data-id="stack-blue" aria-selected="false">Stack in blue</button>
+        <button type="button" role="tab" data-id="blueprint" aria-selected="false">Blueprint</button>
+        <button type="button" role="tab" data-id="strip" aria-selected="false">Strip</button>
+        <button type="button" role="tab" data-id="reading-room" aria-selected="false">Reading Room</button>
+      </div>
+      <a id="open" href="../">Open full page</a>
+    </div>
+    <p id="about"></p>
+  </header>
+  <main>
+    <iframe id="frame" title="Design preview" src="../"></iframe>
+  </main>
+  <script>
+    var directions = {
+      "flagship": { src: "../", name: "Stack", text: "The live v3 site. Mineral ground, deep green, one gold accent. The four-layer stack is the signature: it shows where Isaac works, from agents down to data. Sans headings, serif prose. Leads with the craft." },
+      "stack-blue": { src: "stack-blue/", name: "Stack in blue", text: "The flagship with the green family swapped for blue and nothing else changed. Here to compare against the green. Rebuild it from index.html if the home page changes." },
+      "blueprint": { src: "blueprint/", name: "Blueprint", text: "The site as an engineering drawing. Grid paper, cobalt ink, and a real architecture diagram of the Scenario Simulator in the hero. Leads with systems. Best if the main audience is engineers." },
+      "strip": { src: "strip/", name: "Strip", text: "Full-width colour bands with a woven divider, a nod to strip-woven kente. Indigo, marigold and vermilion, with condensed poster type. Leads with the person. The loudest of the four." },
+      "reading-room": { src: "reading-room/", name: "Reading Room", text: "One quiet column of serif text, writing first, almost no interface. Leads with the essays. Best if the site's main job becomes the blog." }
+    };
+    var frame = document.getElementById("frame"), about = document.getElementById("about"), open = document.getElementById("open");
+    function show(id) {
+      if (!directions[id]) id = "flagship";
+      var d = directions[id];
+      document.querySelectorAll("[data-id]").forEach(function (b) { b.setAttribute("aria-selected", String(b.dataset.id === id)); });
+      if (frame.getAttribute("src") !== d.src) frame.setAttribute("src", d.src);
+      about.innerHTML = "<strong>" + d.name + ".</strong> " + d.text;
+      open.setAttribute("href", d.src);
+      if (location.hash.slice(1) !== id) history.replaceState(null, "", "#" + id);
+    }
+    document.querySelectorAll("[data-id]").forEach(function (b) { b.addEventListener("click", function () { show(b.dataset.id); }); });
+    document.querySelectorAll("[data-width]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        document.querySelectorAll("[data-width]").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+        frame.style.maxWidth = b.dataset.width;
+      });
+    });
+    window.addEventListener("hashchange", function () { show(location.hash.slice(1)); });
+    show(location.hash.slice(1) || "flagship");
+  </script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-demo="strip">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strip direction | Isaac Attuah</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="../../images/favicon.ico">
+  <style>
+    @font-face { font-family: "Archivo"; src: url("../fonts/archivo-var.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; }
+    :root { --indigo: #1d1a5b; --marigold: #f4b323; --vermilion: #d9412b; --cloth: #fff8e7; --black: #17130f; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--cloth); color: var(--black); font: 400 1.125rem/1.55 "Archivo", system-ui, sans-serif; }
+    a { color: inherit; text-decoration-thickness: 0.12em; text-underline-offset: 0.18em; }
+    a:focus-visible { outline: 4px solid var(--black); outline-offset: 3px; }
+    .on-dark a:focus-visible { outline-color: var(--marigold); }
+    h1, h2, h3 { margin: 0; font-weight: 800; font-stretch: 62%; line-height: 0.92; letter-spacing: -0.01em; }
+    p { margin: 0 0 1rem; }
+    .wrap { max-width: 76rem; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 3rem); }
+    .band { padding-block: clamp(3rem, 8vw, 6.5rem); }
+    .indigo { background: var(--indigo); color: var(--cloth); }
+    .marigold { background: var(--marigold); }
+    .vermilion { background: var(--vermilion); color: var(--cloth); }
+    .black { background: var(--black); color: var(--cloth); }
+    /* The woven divider: blocks of colour in a repeating run, like the warp of a strip of cloth. */
+    .weave { height: 28px; background:
+      repeating-linear-gradient(90deg, var(--black) 0 14px, var(--marigold) 14px 56px, var(--vermilion) 56px 70px, var(--marigold) 70px 112px, var(--black) 112px 126px, var(--indigo) 126px 182px, var(--cloth) 182px 189px, var(--indigo) 189px 245px); }
+    .top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding-block: 1.1rem; font-weight: 600; }
+    .top nav { display: flex; gap: 1.25rem; }
+    .top a { text-decoration: none; }
+    .top a:hover { text-decoration: underline; }
+    .hero h1 { font-size: clamp(4rem, 1rem + 15vw, 14.5rem); }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 2rem 3rem; align-items: end; margin-top: clamp(1.5rem, 4vw, 3rem); }
+    .hero-grid p { font-size: clamp(1.25rem, 1rem + 1vw, 1.625rem); line-height: 1.35; font-weight: 500; margin: 0; }
+    .hero-grid img { width: min(100%, 17rem); height: auto; aspect-ratio: 1; border-radius: 50%; justify-self: end; border: 8px solid var(--marigold); }
+    .band h2 { font-size: clamp(2.75rem, 1.5rem + 6vw, 6rem); margin-bottom: clamp(1.5rem, 4vw, 3rem); max-width: 14ch; }
+    .layers { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 6px solid var(--black); }
+    .layers li { padding: 1.25rem 1.25rem 0 0; }
+    .layers h3 { font-size: 2.5rem; margin-bottom: 0.6rem; }
+    .layers small { display: block; font-size: 1rem; font-weight: 700; margin-top: 0.5rem; }
+    .reach { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem 3rem; }
+    .reach b { display: block; font-weight: 800; font-stretch: 62%; font-size: clamp(3.5rem, 2rem + 6vw, 6.5rem); line-height: 0.9; color: var(--marigold); }
+    .reach li:last-child { grid-column: 1 / -1; max-width: 38rem; }
+    .work { list-style: none; margin: 0; padding: 0; }
+    .work li { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 0.75rem 3rem; padding-block: 1.75rem; border-top: 3px solid currentColor; }
+    .work h3 { font-size: clamp(1.9rem, 1.4rem + 2vw, 3rem); }
+    .work small { display: block; font-size: 1rem; font-weight: 700; margin-top: 0.6rem; }
+    .work p { margin-bottom: 0.5rem; }
+    .posts { list-style: none; margin: 0; padding: 0; }
+    .posts li { padding-block: 1.25rem; border-top: 3px solid var(--black); display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: 1.5rem; align-items: baseline; }
+    .posts time { font-weight: 700; }
+    .posts a { font-weight: 800; font-stretch: 75%; font-size: clamp(1.4rem, 1.1rem + 1.4vw, 2.1rem); line-height: 1.08; text-decoration: none; }
+    .posts a:hover { text-decoration: underline; }
+    .cred { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem 3rem; }
+    .cred h3 { font-size: 1.75rem; margin-bottom: 0.9rem; }
+    .cred ul { margin: 0; padding: 0; list-style: none; }
+    .cred li { padding-block: 0.6rem; border-top: 2px solid currentColor; }
+    .mail { display: inline-block; font-weight: 800; font-stretch: 62%; font-size: clamp(2.2rem, 1rem + 7vw, 7rem); line-height: 0.95; overflow-wrap: anywhere; text-decoration-color: var(--marigold); }
+    .links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; margin-top: 2rem; font-weight: 700; }
+    @media (max-width: 52rem) {
+      .hero-grid, .reach, .work li, .cred { grid-template-columns: 1fr; }
+      .hero-grid img { justify-self: start; width: 9rem; order: -1; }
+      .layers { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1.5rem; }
+      .posts li { grid-template-columns: 1fr; gap: 0.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="marigold">
+    <div class="wrap">
+      <header class="top">
+        <a href="./">Isaac Attuah</a>
+        <nav aria-label="Sections"><a href="#work">Work</a><a href="#writing">Writing</a><a href="#contact">Contact</a></nav>
+      </header>
+      <div class="hero" style="padding-bottom: clamp(2.5rem, 6vw, 5rem)">
+        <h1>Isaac Kofi Attuah</h1>
+        <div class="hero-grid">
+          <p>From Ghana to Miami to Atlanta. I'm an AI/ML Customer Engineer on the Startups team at Google Cloud, and I help AI-native companies get agents out of the demo and into production.</p>
+          <img src="../../images/portrait-640.webp" width="640" height="640" alt="Isaac Attuah, smiling, wearing clear-framed glasses">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="weave" aria-hidden="true"></div>
+
+  <section class="band">
+    <div class="wrap">
+      <h2>Four layers, one job</h2>
+      <ol class="layers">
+        <li><h3>Agents</h3>Multi-agent architectures that hold up past the first task.<small>Vertex AI Agent Builder, Gemini API</small></li>
+        <li><h3>Models</h3>Evaluation and selection. The smallest model that passes.<small>Model Garden, Claude on Vertex AI</small></li>
+        <li><h3>Capacity</h3>GPU and TPU capacity, and inference that is ready on launch day.<small>Provisioned Throughput, GKE, Cloud Run, Terraform</small></li>
+        <li><h3>Data</h3>The platforms your agents read from and write to.<small>BigQuery, Spanner, Looker</small></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band indigo on-dark">
+    <div class="wrap">
+      <h2>What I learn, I teach</h2>
+      <ul class="reach">
+        <li><b>4,600+</b>Customer Engineers onboarded with Google Cloud labs I built.</li>
+        <li><b>3,000+</b>Cloud go-to-market staff using my certification guides.</li>
+        <li><b>550+</b>attendees at Agentic AI workshops I co-led at Atlanta Tech Week 2026.</li>
+        <li><b>360+</b>engineers on my Professional ML Engineer study guide.</li>
+        <li>I also cut $50K+ from enterprise BigQuery costs, shipped Looker dashboards for large enterprise customers, and write the customer-impact reports that tell leadership where Vertex AI adoption gets stuck.</li>
+      </ul>
+    </div>
+  </section>
+  <div class="weave" aria-hidden="true"></div>
+
+  <section class="band" id="work">
+    <div class="wrap">
+      <h2>Things I built or led</h2>
+      <ul class="work">
+        <li><div><h3>Customer Scenario Simulator II</h3><small>Designer and builder</small></div><div><p>A practice customer with a hidden objective, a rubric-anchored judge, and BigQuery skill tracking. Claude on Vertex AI, FastAPI, Cloud Run.</p><a href="https://github.com/isaacattuah/Customer-Scenario-Simulator-v2" rel="noopener">Code on GitHub</a></div></li>
+        <li><div><h3>Agentic Compliance Assistant</h3><small>Product and tech lead</small></div><div><p>Led two engineers on a Gemini, Apps Script and Google Chat workflow agent for five regional pods. 98 to 100 percent compliance and about 900 hours a year back. Sponsored for an org-wide pilot.</p></div></li>
+        <li><div><h3>Google.org civic AI fellowships</h3><small>AI Coach 2026, 20% Engineer 2024</small></div><div><p>Advised Code for America and co-led the D.C. kickoff design sprint. Built a GenAI business-licensing chatbot and portal for 3,000+ businesses in Macon-Bibb County.</p></div></li>
+        <li><div><h3>Terraform CI/CD Pipeline Kit</h3><small>Author</small></div><div><p>A reusable Terraform blueprint for CI/CD onto GKE and Cloud Run.</p><a href="https://github.com/isaacattuah/ci-cd-pipeline" rel="noopener">Code on GitHub</a></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band marigold" id="writing">
+    <div class="wrap">
+      <h2>Writing</h2>
+      <ul class="posts">
+        <li><time datetime="2026-11-11">Nov 2026</time><a href="../../writing/building-a-practice-customer/">Building a practice customer: persona agents, hidden objectives, and a judge you can trust</a></li>
+        <li><time datetime="2026-07-29">Jul 2026</time><a href="../../writing/you-dont-always-need-a-frontier-model/">You don't always need a frontier model. You need one that fits.</a></li>
+        <li><time datetime="2025-11-14">Nov 2025</time><a href="../../writing/four-steps-for-startups-multi-agent-systems/">Notes from building the agent behind "Four steps for startups to build multi-agent systems"</a></li>
+        <li><time datetime="2024-07-08">Jul 2024</time><a href="../../writing/vertex-ai-studio-vs-google-ai-studio/">Vertex AI Studio or Google AI Studio? Pick by stage, not by feature list</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band vermilion on-dark">
+    <div class="wrap cred">
+      <div><h3>Education</h3><ul><li>MSc. Artificial Intelligence, University of the Cumberlands, 2026. GPA 4.0</li><li>BSc. Computer Science, University of Miami, 2022. Cum Laude, GPA 3.907</li><li>Prior study at KNUST, Ghana</li></ul></div>
+      <div><h3>Google Cloud certified, four times</h3><ul>
+        <li><a href="https://www.credly.com/badges/81c1ce43-d8e4-4efe-9da1-9f3ef0329c97/public_url" rel="noopener">Professional Machine Learning Engineer</a></li>
+        <li><a href="https://www.credly.com/badges/06cd3ca0-5eff-4865-aec7-f7851a70e32b/public_url" rel="noopener">Professional Cloud Architect</a></li>
+        <li><a href="https://www.credly.com/badges/c6a411d0-c5ef-4c21-9de0-02b64d5d2756/public_url" rel="noopener">Professional Data Engineer</a></li>
+        <li><a href="https://www.credly.com/badges/20f67abf-6c94-4974-910d-6a0dbf2090a2/public_url" rel="noopener">Associate Cloud Engineer</a></li>
+      </ul></div>
+    </div>
+  </section>
+  <div class="weave" aria-hidden="true"></div>
+
+  <section class="band black on-dark" id="contact">
+    <div class="wrap">
+      <a class="mail" href="mailto:isaacattuah@gmail.com">isaacattuah@gmail.com</a>
+      <div class="links"><a href="https://www.linkedin.com/in/isaacattuah/" rel="noopener">LinkedIn</a><a href="https://github.com/isaacattuah" rel="noopener">GitHub</a><a href="https://medium.com/@isaacattuah" rel="noopener">Medium</a><a href="https://www.quora.com/profile/Isaac-Attuah-1" rel="noopener">Quora</a><a href="https://docs.google.com/document/d/1EyAMBDKFZllOAJzON1glSD8Yo8AhkFOQifTpaNQ_IcY/edit?usp=sharing" rel="noopener">Resume</a></div>
+    </div>
+  </section>
+  <script src="../switcher.js"></script>
+</body>
+</html>

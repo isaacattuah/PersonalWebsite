@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Notes from building the agent behind &quot;Four steps for startups to build multi-agent systems&quot; | Isaac Attuah</title>
+  <meta name="description" content="My colleague Oluwamayowa Awojuyigbe wrote up a multi-agent build I helped architect. These are the four lessons from that project I now repeat to almost every startup I work with.">
+  <link rel="canonical" href="https://cloud.google.com/blog/topics/startups/four-steps-for-startups-to-build-multi-agent-systems">
+  <meta name="author" content="Isaac Attuah">
+  <meta property="og:site_name" content="Isaac Attuah">
+  <meta property="og:title" content="Notes from building the agent behind &quot;Four steps for startups to build multi-agent systems&quot; | Isaac Attuah">
+  <meta property="og:description" content="My colleague Oluwamayowa Awojuyigbe wrote up a multi-agent build I helped architect. These are the four lessons from that project I now repeat to almost every startup I work with.">
+  <meta property="og:url" content="https://isaacattuah.com/writing/four-steps-for-startups-multi-agent-systems/">
+  <meta property="og:image" content="https://isaacattuah.com/images/og.png">
+  <meta property="og:type" content="article">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Isaac Kofi Attuah, AI/ML Customer Engineer for startups at Google Cloud">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#f2f5f1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f211b" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="../../images/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../images/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="../../images/apple-touch-icon.png">
+  <link rel="manifest" href="../../site.webmanifest">
+  <link rel="alternate" type="application/rss+xml" title="Isaac Attuah: Writing" href="../../feed.xml">
+  <link rel="preload" href="../../assets/fonts/bricolage-grotesque-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <script src="../../assets/js/site.js" defer></script>
+  <meta property="article:published_time" content="2025-11-14">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../../">Isaac Attuah</a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="../../#systems">Work</a>
+        <a href="../../writing/" aria-current="page">Writing</a>
+        <a href="../../#about">About</a>
+        <a href="../../#contact">Contact</a>
+      </nav>
+      <div class="site-controls">
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="post">
+      <header class="post-header">
+        <div class="wrap">
+          <div class="post-column">
+            <h1>Notes from building the agent behind &quot;Four steps for startups to build multi-agent systems&quot;</h1>
+            <p class="post-meta"><time datetime="2025-11-14">November 14, 2025</time>, 2 minute read</p>
+            <p class="post-summary">My colleague Oluwamayowa Awojuyigbe wrote up a multi-agent build I helped architect. These are the four lessons from that project I now repeat to almost every startup I work with.</p>
+            <p class="post-origin">This is a companion to a piece published on the Google Cloud Blog. <a href="https://cloud.google.com/blog/topics/startups/four-steps-for-startups-to-build-multi-agent-systems" rel="noopener">Read the original</a>.</p>
+          </div>
+        </div>
+      </header>
+      <div class="wrap">
+        <div class="post-column">
+          <nav class="post-toc" aria-label="In this piece"><h2>In this piece</h2><ol><li><a href="#1-decide-what-kind-of-build-this-is-before-writing-any-code">1. Decide what kind of build this is before writing any code</a></li><li><a href="#2-let-the-model-talk-and-let-code-do-the-work">2. Let the model talk and let code do the work</a></li><li><a href="#3-isolate-state-or-your-agent-gets-worse-as-it-goes">3. Isolate state, or your agent gets worse as it goes</a></li><li><a href="#4-treat-the-path-to-production-as-part-of-the-build">4. Treat the path to production as part of the build</a></li><li><a href="#why-i-keep-coming-back-to-this-project">Why I keep coming back to this project</a></li></ol></nav>
+          <div class="prose">
+<p>The technical guide on the Google Cloud Blog was written by Oluwamayowa Awojuyigbe, a fellow Customer Engineer. I was one of the collaborators who helped architect and build the agent it describes. The article is his and you should read it for the full walkthrough and code. What follows is my own short list of what the project taught me.</p>
+<h2 id="1-decide-what-kind-of-build-this-is-before-writing-any-code">1. Decide what kind of build this is before writing any code</h2>
+<p>There are three honest options: use an agent someone already built, adopt a partner&#x27;s, or write your own. We wrote our own, code-first, because the workflow encoded logic specific to the team and we needed control over orchestration.</p>
+<p>Most startups skip this decision and discover it later, halfway through fighting a tool that was never meant for their case. Ten minutes on it up front is cheap.</p>
+<h2 id="2-let-the-model-talk-and-let-code-do-the-work">2. Let the model talk and let code do the work</h2>
+<p>The design that held up was a hybrid. A language model handles the conversational part, such as onboarding the user and collecting what it needs. Then it hands off to deterministic workflow steps that loop over the real work, with each step wrapped as a tool.</p>
+<p>The instinct to make everything an agent is strong and usually wrong. If a step has one correct way to run, it should be code. Save the model for the parts that need judgment.</p>
+<h2 id="3-isolate-state-or-your-agent-gets-worse-as-it-goes">3. Isolate state, or your agent gets worse as it goes</h2>
+<p>Our agent processed a list of companies in a loop. Left alone, context from the first company bled into the fifth, and quality dropped the longer it ran. The fix was to wrap the research pipeline as its own agent, called as a tool, so every item started with a clean context.</p>
+<p>If your agent is good on the first task and strange by the tenth, look here first.</p>
+<h2 id="4-treat-the-path-to-production-as-part-of-the-build">4. Treat the path to production as part of the build</h2>
+<p>A demo on localhost proves the idea. It does not prove you can ship it. We started from a production-grade project template, set up CI/CD with a manual approval before production, and deployed to a managed runtime that scales to zero when idle.</p>
+<p>None of that is exciting. All of it is the difference between an agent your team shows in a meeting and one your customers use.</p>
+<h2 id="why-i-keep-coming-back-to-this-project">Why I keep coming back to this project</h2>
+<p>Every one of these lessons is about structure, not model quality. The model was never the hard part. Knowing where to put the boundaries was.</p>
+          </div>
+          <nav class="pager" aria-label="More writing"><a class="pager-newer" href="../you-dont-always-need-a-frontier-model/"><span>Newer</span>You don&#x27;t always need a frontier model. You need one that fits.</a><a class="pager-older" href="../vertex-ai-studio-vs-google-ai-studio/"><span>Older</span>Vertex AI Studio or Google AI Studio? Pick by stage, not by feature list</a></nav>
+          <p class="post-end"><a href="../">All writing</a></p>
+        </div>
+      </div>
+    </article>
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <h2 id="contact-title">Building with agents, or stuck choosing a model? Write to me.</h2>
+        <a class="contact-email" href="mailto:isaacattuah@gmail.com">isaacattuah@gmail.com</a>
+        <ul class="contact-links">
+          <li><a href="https://www.linkedin.com/in/isaacattuah/" rel="noopener me">LinkedIn</a></li>
+          <li><a href="https://github.com/isaacattuah" rel="noopener me">GitHub</a></li>
+          <li><a href="https://medium.com/@isaacattuah" rel="noopener me">Medium</a></li>
+          <li><a href="https://www.quora.com/profile/Isaac-Attuah-1" rel="noopener me">Quora</a></li>
+          <li><a href="https://docs.google.com/document/d/1EyAMBDKFZllOAJzON1glSD8Yo8AhkFOQifTpaNQ_IcY/edit?usp=sharing" rel="noopener">Resume</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <section class="time-machine" aria-labelledby="tm-title">
+        <h2 id="tm-title">Time machine: every version of this site still runs. Each opens in a new tab</h2>
+        <ol class="versions">
+          <li><a href="../../legacy/v0/" target="_blank" rel="noopener">v0, 2019</a><span>Hand-written HTML and tables</span></li>
+          <li><a href="../../legacy/v1/" target="_blank" rel="noopener">v1, 2020</a><span>The student portfolio</span></li>
+          <li><a href="../../legacy/v2/" target="_blank" rel="noopener">v2, 2025</a><span>Single page with dark mode</span></li>
+          <li aria-current="true"><strong>v3, 2026</strong><span>You are here</span></li>
+        </ol>
+      </section>
+      <div class="footer-meta">
+        <p>&copy; <span data-year>2026</span> Isaac Kofi Attuah. Opinions are my own, not my employer's.</p>
+        <p><a href="../../feed.xml">RSS feed</a></p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

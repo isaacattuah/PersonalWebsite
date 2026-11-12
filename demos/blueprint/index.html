@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" data-demo="blueprint">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blueprint direction | Isaac Attuah</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="../../images/favicon.ico">
+  <style>
+    @font-face { font-family: "IBM Plex Sans"; src: url("../fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+    @font-face { font-family: "IBM Plex Sans"; src: url("../fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+    @font-face { font-family: "IBM Plex Mono"; src: url("../fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+    @font-face { font-family: "IBM Plex Mono"; src: url("../fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+    :root { --paper: #eef2f9; --grid: #d5deee; --ink: #0f1d45; --blue: #1b3fa8; --soft: #44527a; --panel: #f8fafd; --mark: #e2572b;
+      --sans: "IBM Plex Sans", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); font: 400 1.0625rem/1.6 var(--sans);
+      background: var(--paper) linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 100% 32px, linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 32px 100%; background-color: var(--paper);
+      background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 32px 32px; }
+    a { color: var(--blue); text-underline-offset: 0.2em; }
+    a:focus-visible { outline: 3px solid var(--mark); outline-offset: 3px; }
+    h1, h2, h3 { margin: 0; line-height: 1.12; font-weight: 600; }
+    p { margin: 0 0 1rem; }
+    .wrap { max-width: 72rem; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 2.5rem); }
+    header.top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 1.5rem; padding-block: 1.25rem; font-family: var(--mono); font-size: 0.875rem; }
+    header.top a { color: var(--ink); }
+    header.top nav { display: flex; gap: 1.25rem; }
+    .hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 2.5rem; align-items: center; padding-block: clamp(2rem, 6vw, 4.5rem); }
+    .hero h1 { font-size: clamp(2.1rem, 1.2rem + 3.4vw, 3.6rem); letter-spacing: -0.02em; }
+    .hero p { font-size: 1.1875rem; margin-top: 1.25rem; max-width: 30rem; }
+    .who { display: flex; align-items: center; gap: 0.9rem; margin-top: 1.75rem; font-family: var(--mono); font-size: 0.875rem; line-height: 1.45; color: var(--soft); }
+    .who img { width: 3.5rem; height: 3.5rem; border-radius: 50%; border: 2px solid var(--blue); }
+    figure { margin: 0; background: var(--panel); border: 1.5px solid var(--blue); padding: clamp(0.75rem, 2vw, 1.25rem); }
+    figure svg { display: block; width: 100%; height: auto; }
+    figcaption { font-family: var(--mono); font-size: 0.8125rem; color: var(--soft); border-top: 1px dashed var(--blue); margin-top: 0.75rem; padding-top: 0.6rem; }
+    .box { fill: var(--panel); stroke: var(--blue); stroke-width: 1.5; }
+    .box-solid { fill: var(--blue); }
+    .wire { stroke: var(--blue); stroke-width: 1.5; fill: none; }
+    .t { font: 500 13px var(--mono); fill: var(--ink); }
+    .t-inv { font: 500 13px var(--mono); fill: #fff; }
+    .t-s { font: 400 11px var(--mono); fill: var(--soft); }
+    .t-hid { font: 500 11px var(--mono); fill: var(--mark); }
+    section { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+    .sheet { background: var(--panel); border: 1.5px solid var(--blue); }
+    .sheet > h2 { font-size: 1.375rem; padding: 0.9rem 1.25rem; border-bottom: 1.5px solid var(--blue); display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+    .sheet > h2 span { font: 400 0.8125rem var(--mono); color: var(--soft); }
+    .cells { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .cell { padding: 1.25rem; border-right: 1px dashed var(--blue); }
+    .cell:last-child { border-right: 0; }
+    .cell h3 { font-size: 1.125rem; margin-bottom: 0.5rem; }
+    .cell p { font-size: 1rem; line-height: 1.5; }
+    .cell .tools { font: 400 0.8125rem/1.5 var(--mono); color: var(--blue); margin: 0; }
+    .rows { list-style: none; margin: 0; padding: 0; }
+    .rows li { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1.25rem; padding: 0.9rem 1.25rem; border-bottom: 1px dashed var(--blue); align-items: baseline; }
+    .rows li:last-child { border-bottom: 0; }
+    .rows b { font: 500 1.25rem var(--mono); color: var(--blue); }
+    .sys { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sys article { padding: 1.25rem; border-bottom: 1px dashed var(--blue); }
+    .sys article:nth-child(odd) { border-right: 1px dashed var(--blue); }
+    .sys article:nth-last-child(-n+2) { border-bottom: 0; }
+    .sys h3 { font-size: 1.125rem; }
+    .sys .role { font: 400 0.8125rem var(--mono); color: var(--soft); margin: 0.35rem 0 0.6rem; }
+    .sys p { font-size: 1rem; line-height: 1.5; margin-bottom: 0.5rem; }
+    .posts { list-style: none; margin: 0; padding: 0; }
+    .posts li { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1.25rem; padding: 0.9rem 1.25rem; border-bottom: 1px dashed var(--blue); }
+    .posts li:last-child { border-bottom: 0; }
+    .posts time { font: 400 0.8125rem var(--mono); color: var(--soft); padding-top: 0.25rem; }
+    .posts a { font-weight: 600; }
+    .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .two > div { padding: 1.25rem; }
+    .two > div:first-child { border-right: 1px dashed var(--blue); }
+    .two h3 { font: 500 0.8125rem var(--mono); color: var(--soft); margin-bottom: 0.6rem; }
+    .two ul { margin: 0; padding-left: 1.1rem; }
+    .two li { margin-bottom: 0.4rem; }
+    footer { padding-block: 2.5rem 3rem; font-family: var(--mono); font-size: 0.875rem; display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; justify-content: space-between; }
+    footer .big { font: 600 clamp(1.25rem, 1rem + 1.6vw, 2rem) var(--sans); }
+    @media (max-width: 56rem) {
+      .hero { grid-template-columns: 1fr; }
+      .cells, .sys, .two { grid-template-columns: 1fr; }
+      .cell, .sys article:nth-child(odd), .two > div:first-child { border-right: 0; }
+      .cell, .two > div:first-child { border-bottom: 1px dashed var(--blue); }
+      .cell:last-child { border-bottom: 0; }
+      .sys article:nth-last-child(2) { border-bottom: 1px dashed var(--blue); }
+      .rows li, .posts li { grid-template-columns: 1fr; gap: 0.15rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a href="./">isaac attuah / systems</a>
+      <nav aria-label="Sections"><a href="#craft">craft</a><a href="#systems">systems</a><a href="#writing">writing</a><a href="#contact">contact</a></nav>
+    </header>
+
+    <div class="hero">
+      <div>
+        <h1>I design the systems that get AI startups to production.</h1>
+        <p>Multi-agent architecture, model evaluation and selection, inference capacity, and the data platforms underneath.</p>
+        <div class="who">
+          <img src="../../images/portrait-320.webp" width="320" height="320" alt="Isaac Attuah">
+          <span>Isaac Kofi Attuah<br>AI/ML Customer Engineer, Startups<br>Google Cloud, Atlanta</span>
+        </div>
+      </div>
+      <figure>
+        <svg viewBox="0 0 640 360" role="img" aria-labelledby="fig-title fig-desc">
+          <title id="fig-title">Architecture of Customer Scenario Simulator II</title>
+          <desc id="fig-desc">A Customer Engineer talks to a FastAPI service on Cloud Run. The service calls a persona agent that holds a hidden objective, and a coach agent that grades the transcript against a rubric. Sessions, turns and scores are written to BigQuery.</desc>
+          <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#1b3fa8"/></marker></defs>
+          <rect class="box" x="16" y="140" width="112" height="72"/>
+          <text class="t" x="72" y="172" text-anchor="middle">Customer</text><text class="t" x="72" y="190" text-anchor="middle">Engineer</text>
+          <path class="wire" d="M128 176H196" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+          <rect class="box-solid" x="198" y="128" width="128" height="96"/>
+          <text class="t-inv" x="262" y="168" text-anchor="middle">FastAPI</text><text class="t-inv" x="262" y="186" text-anchor="middle">on Cloud Run</text>
+          <text class="t-s" x="262" y="246" text-anchor="middle">/session /chat /grade</text>
+          <path class="wire" d="M326 152H372V72H420" marker-end="url(#arrow)"/>
+          <path class="wire" d="M326 200H372V288H420" marker-end="url(#arrow)"/>
+          <rect class="box" x="422" y="28" width="200" height="88"/>
+          <text class="t" x="522" y="58" text-anchor="middle">Persona agent</text>
+          <text class="t-s" x="522" y="78" text-anchor="middle">plays the customer</text>
+          <text class="t-hid" x="522" y="98" text-anchor="middle">holds a hidden objective</text>
+          <rect class="box" x="422" y="244" width="200" height="88"/>
+          <text class="t" x="522" y="274" text-anchor="middle">Coach agent</text>
+          <text class="t-s" x="522" y="294" text-anchor="middle">rubric-anchored judge</text>
+          <text class="t-s" x="522" y="312" text-anchor="middle">scores with evidence</text>
+          <text class="t-s" x="522" y="138" text-anchor="middle">Claude on Vertex AI</text>
+          <text class="t-s" x="522" y="232" text-anchor="middle">Claude on Vertex AI</text>
+          <path class="wire" d="M262 224V300H150" marker-end="url(#arrow)" stroke-dasharray="5 4"/>
+          <rect class="box" x="36" y="272" width="112" height="56"/>
+          <text class="t" x="92" y="296" text-anchor="middle">BigQuery</text><text class="t-s" x="92" y="314" text-anchor="middle">skill history</text>
+        </svg>
+        <figcaption>Fig. 1. Customer Scenario Simulator II. Two agents that never share context: one acts, one judges. <a href="../../writing/building-a-practice-customer/">Read how it works</a>.</figcaption>
+      </figure>
+    </div>
+
+    <section id="craft">
+      <div class="sheet">
+        <h2>Where I work in the stack <span>4 layers</span></h2>
+        <div class="cells">
+          <div class="cell"><h3>Agents</h3><p>Orchestration, deterministic steps, and state that does not leak between tasks.</p><p class="tools">Vertex AI Agent Builder<br>Gemini API</p></div>
+          <div class="cell"><h3>Models</h3><p>A representative eval, then the smallest model that passes it.</p><p class="tools">Model Garden<br>Claude on Vertex AI</p></div>
+          <div class="cell"><h3>Capacity</h3><p>GPU and TPU capacity and inference infrastructure, planned ahead of traffic.</p><p class="tools">Provisioned Throughput<br>GKE, Cloud Run, Terraform</p></div>
+          <div class="cell"><h3>Data</h3><p>The platforms agents read from and write to.</p><p class="tools">BigQuery<br>Spanner, Looker</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sheet">
+        <h2>Field to product <span>enablement reach</span></h2>
+        <ul class="rows">
+          <li><b>4,600+</b><span>Customer Engineers onboarded with the Google Cloud labs I built.</span></li>
+          <li><b>3,000+</b><span>Cloud go-to-market staff using my certification guides.</span></li>
+          <li><b>550+</b><span>attendees at Agentic AI workshops I co-led at Atlanta Tech Week 2026.</span></li>
+          <li><b>360+</b><span>engineers on my Professional ML Engineer study guide, plus a 15-person cohort I led.</span></li>
+          <li><b>$50K+</b><span>cut from enterprise BigQuery costs, with Looker dashboards shipped for large enterprise customers.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="systems">
+      <div class="sheet">
+        <h2>Selected systems and civic work <span>4 entries</span></h2>
+        <div class="sys">
+          <article><h3>Customer Scenario Simulator II</h3><p class="role">designer and builder</p><p>Multi-agent practice tool: hidden-objective persona, LLM-as-judge rubric scoring, BigQuery skill tracking.</p><a href="https://github.com/isaacattuah/Customer-Scenario-Simulator-v2" rel="noopener">Code on GitHub</a></article>
+          <article><h3>Internal Agentic Compliance Assistant</h3><p class="role">product and tech lead, 2 engineers</p><p>Gemini, Apps Script and Google Chat workflow agent across five regional pods. 98 to 100 percent compliance, about 900 hours a year saved, sponsored for an org-wide pilot.</p></article>
+          <article><h3>Google.org civic AI fellowships</h3><p class="role">AI coach 2026, 20% engineer 2024</p><p>Advised Code for America and co-led the D.C. kickoff design sprint. Built a GenAI business-licensing chatbot and portal for 3,000+ businesses in Macon-Bibb County.</p></article>
+          <article><h3>Terraform CI/CD Pipeline Kit</h3><p class="role">author</p><p>Reusable Terraform blueprint for CI/CD onto GKE and Cloud Run.</p><a href="https://github.com/isaacattuah/ci-cd-pipeline" rel="noopener">Code on GitHub</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="writing">
+      <div class="sheet">
+        <h2>Writing <span><a href="../../writing/">all posts</a></span></h2>
+        <ul class="posts">
+          <li><time datetime="2026-11-11">2026-11</time><span><a href="../../writing/building-a-practice-customer/">Building a practice customer: persona agents, hidden objectives, and a judge you can trust</a></span></li>
+          <li><time datetime="2026-07-29">2026-07</time><span><a href="../../writing/you-dont-always-need-a-frontier-model/">You don't always need a frontier model. You need one that fits.</a></span></li>
+          <li><time datetime="2025-11-14">2025-11</time><span><a href="../../writing/four-steps-for-startups-multi-agent-systems/">Notes from building the agent behind "Four steps for startups to build multi-agent systems"</a></span></li>
+          <li><time datetime="2024-07-08">2024-07</time><span><a href="../../writing/vertex-ai-studio-vs-google-ai-studio/">Vertex AI Studio or Google AI Studio? Pick by stage, not by feature list</a></span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="sheet">
+        <h2>Credentials</h2>
+        <div class="two">
+          <div><h3>education</h3><ul><li>MSc. Artificial Intelligence, University of the Cumberlands, 2026 (4.0)</li><li>BSc. Computer Science, University of Miami, 2022 (Cum Laude, 3.907). Prior study at KNUST</li></ul></div>
+          <div><h3>google cloud certifications</h3><ul>
+            <li><a href="https://www.credly.com/badges/81c1ce43-d8e4-4efe-9da1-9f3ef0329c97/public_url" rel="noopener">Professional Machine Learning Engineer</a></li>
+            <li><a href="https://www.credly.com/badges/06cd3ca0-5eff-4865-aec7-f7851a70e32b/public_url" rel="noopener">Professional Cloud Architect</a></li>
+            <li><a href="https://www.credly.com/badges/c6a411d0-c5ef-4c21-9de0-02b64d5d2756/public_url" rel="noopener">Professional Data Engineer</a></li>
+            <li><a href="https://www.credly.com/badges/20f67abf-6c94-4974-910d-6a0dbf2090a2/public_url" rel="noopener">Associate Cloud Engineer</a></li>
+          </ul></div>
+        </div>
+      </div>
+    </section>
+
+    <footer id="contact">
+      <a class="big" href="mailto:isaacattuah@gmail.com">isaacattuah@gmail.com</a>
+      <span><a href="https://www.linkedin.com/in/isaacattuah/" rel="noopener">linkedin</a> / <a href="https://github.com/isaacattuah" rel="noopener">github</a> / <a href="https://medium.com/@isaacattuah" rel="noopener">medium</a> / <a href="https://docs.google.com/document/d/1EyAMBDKFZllOAJzON1glSD8Yo8AhkFOQifTpaNQ_IcY/edit?usp=sharing" rel="noopener">resume</a></span>
+    </footer>
+  </div>
+  <script src="../switcher.js"></script>
+</body>
+</html>

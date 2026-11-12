@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+  <title>Isaac Attuah: Writing</title>
+  <link>https://isaacattuah.com/writing/</link>
+  <description>Notes on multi-agent systems, model selection, and getting AI into production.</description>
+  <language>en</language>
+  <atom:link href="https://isaacattuah.com/feed.xml" rel="self" type="application/rss+xml"/>
+  <lastBuildDate>Wed, 11 Nov 2026 12:00:00 +0000</lastBuildDate>
+  <item>
+    <title>Building a practice customer: persona agents, hidden objectives, and a judge you can trust</title>
+    <link>https://isaacattuah.com/writing/building-a-practice-customer/</link>
+    <guid isPermaLink="true">https://isaacattuah.com/writing/building-a-practice-customer/</guid>
+    <pubDate>Wed, 11 Nov 2026 12:00:00 +0000</pubDate>
+    <description>How Customer Scenario Simulator II works: one agent plays a customer who is holding something back, a second grades the conversation against a rubric, and a small eval harness checks that the grader deserves to be believed.</description>
+    <content:encoded><![CDATA[<p>Discovery is the skill that separates a good Customer Engineer from a product catalog with a calendar. It is also the hardest one to practice. You cannot rehearse on a real customer, and a colleague playing the customer already knows what you are fishing for.</p>
+<p>In 2023 I built a small Colab notebook that used PaLM&#x27;s <code>chat-bison</code> to role-play a customer. It was fun and not much more. The customer was a random adjective attached to a product area, and the feedback was one freeform prompt that mostly said &quot;good job.&quot;</p>
+<p>Customer Scenario Simulator II is the rebuild. This piece walks through the three decisions that made it useful: giving the customer something to hide, grading with a rubric instead of a vibe, and testing the grader before trusting it. The <a href="https://github.com/isaacattuah/Customer-Scenario-Simulator-v2" rel="noopener">code is on GitHub</a>.</p>
+<h2 id="the-shape-of-the-system">The shape of the system</h2>
+<p>There are two agents, one web service, and one warehouse.</p>
+<div class="table-scroll"><table><thead><tr><th>Part</th><th>What it does</th><th>Runs on</th></tr></thead><tbody><tr><td>Persona agent</td><td>Plays the customer, in character, turn by turn</td><td>Claude on Vertex AI</td></tr><tr><td>Coach agent</td><td>Reads the finished transcript and scores it</td><td>Claude on Vertex AI</td></tr><tr><td>API and UI</td><td>Sessions, chat, grading</td><td>FastAPI on Cloud Run</td></tr><tr><td>Skill history</td><td>Sessions, turns, scores, a leaderboard view</td><td>BigQuery</td></tr></tbody></table></div>
+<p>A session has three calls. <code>/session/new</code> creates a persona. <code>/chat</code> sends your message and returns the customer&#x27;s reply. <code>/grade</code> hands the whole conversation to the coach and returns a scorecard.</p>
+<p>The two agents never talk to each other. They have separate system prompts and separate jobs, and the only thing that passes between them is the transcript. That separation is the whole design. The persona must not know how it will be graded, or it starts performing for the rubric. The coach must not be in the conversation, or it stops being a judge.</p>
+<h2 id="give-the-customer-something-to-hide">Give the customer something to hide</h2>
+<p>The first version failed because the customer had no interior. Ask it what it needed and it told you. Real customers do not do that. The stated problem (&quot;we want to cut our inference bill&quot;) is rarely the real one (&quot;our CTO promised the board a launch date and we do not have the capacity&quot;).</p>
+<p>So each session starts by generating a structured persona card. Here is a simplified illustration of the idea, not the exact schema in the repository:</p>
+<pre><code class="language-json">{
+  &quot;company&quot;: &quot;Series B logistics startup, 60 engineers&quot;,
+  &quot;role&quot;: &quot;VP of Engineering&quot;,
+  &quot;personality&quot;: &quot;skeptical, short on time&quot;,
+  &quot;product_area&quot;: &quot;data analytics&quot;,
+  &quot;stated_goal&quot;: &quot;Cut warehouse spend before the next board meeting&quot;,
+  &quot;hidden_objectives&quot;: [
+    &quot;A migration last year went badly and the team distrusts lift-and-shift&quot;,
+    &quot;The real deadline is a customer audit in six weeks&quot;
+  ],
+  &quot;reveal_rules&quot;: &quot;Share a hidden objective only when asked a specific, open question about it&quot;
+}</code></pre>
+<p>The persona agent receives the card and the running conversation state as context on every turn. The person practicing never sees the hidden objectives. They have to earn them, the same way they would in a real meeting: by asking better questions.</p>
+<p>Two things made this work in practice.</p>
+<p><strong>Structure beats adjectives.</strong> &quot;Be a difficult customer&quot; produces theater. A card with a stated goal, specific hidden objectives and explicit rules for when to reveal them produces a customer who is consistent across twenty turns.</p>
+<p><strong>State is context, not memory.</strong> The service keeps session state itself and injects it on each call. The model is never asked to remember what it already revealed. It is told.</p>
+<h2 id="grade-with-a-rubric-and-demand-evidence">Grade with a rubric, and demand evidence</h2>
+<p>When you finish, the coach agent gets three things: the full transcript, the hidden objectives, and a rubric. The rubric lives in a YAML file and is the single source of truth for what &quot;good&quot; means. Changing how Customer Engineers are assessed is a change to that file, not to a prompt buried in code.</p>
+<p>The coach returns structured JSON: a score for each rubric dimension, and for each score, the turns in the transcript that justify it. Then the scorecard reveals what the customer was hiding, so you can see which objective you found and which one walked out of the room with them.</p>
+<p>The evidence requirement matters more than the score. A grader that says &quot;discovery: 3 out of 5&quot; teaches you nothing. A grader that says &quot;3 out of 5, because in turn 4 you asked about timeline but accepted the first answer, and in turn 9 you pitched before confirming the constraint&quot; gives you something to do differently tomorrow.</p>
+<p>Structured output from a model fails occasionally, so the service validates the response against a schema and allows exactly one repair attempt if parsing fails. One retry catches almost everything. Unlimited retries hide a prompt problem you should fix instead.</p>
+<h2 id="grade-the-grader">Grade the grader</h2>
+<p>This is the part most LLM-as-judge projects skip, and it is the part I would keep if I had to throw the rest away.</p>
+<p>A judge is only useful if it is consistent and calibrated. So the repository includes a small harness with hand-labeled golden transcripts: one strong, one mixed, one weak. Each has an expected score range written down in advance. The harness runs every transcript through the judge several times and checks three things:</p>
+<ol><li><strong>Consistency.</strong> Does the same transcript get roughly the same score on every run?</li><li><strong>Calibration.</strong> Do the scores land inside the range a human said they should?</li><li><strong>Ranking.</strong> Does strong beat mixed, and mixed beat weak, every time?</li></ol>
+<pre><code class="language-bash">python -m evals.judge_consistency --runs 3</code></pre>
+<p>If you change the rubric, the coach prompt or the model, you rerun this before you believe a single scorecard. It is the same discipline as a unit test, pointed at the one component whose output everyone will take on faith.</p>
+<h2 id="keep-the-history-but-never-block-on-it">Keep the history, but never block on it</h2>
+<p>Every session, turn and score is written to BigQuery, with a leaderboard view on top. That turns a toy into a training tool. You can ask whether your discovery scores improved over a month, or which rubric dimension a whole team is weakest on.</p>
+<p>Persistence is fail-soft. If BigQuery is unreachable, the conversation carries on and the app says nothing dramatic. Session state lives in memory and BigQuery is the durable record. For a practice tool that is the right trade: losing a row of analytics is cheap, and killing someone&#x27;s session in the middle of a hard conversation is not. You can also switch BigQuery off entirely with one environment variable and run the full loop on a laptop.</p>
+<h2 id="deployment-notes-that-cost-me-time">Deployment notes that cost me time</h2>
+<ul><li><strong>Scale to zero.</strong> The service is a source-based Cloud Run deploy. A practice tool is idle most of the day and should cost nothing while it is.</li><li><strong>No keys in code.</strong> Authentication is Application Default Credentials end to end.</li><li><strong>Use <code>/health</code>, not only <code>/healthz</code>.</strong> On Cloud Run the Google Front End intercepts <code>/healthz</code> before it reaches your container. I registered both paths and point checks at <code>/health</code>.</li><li><strong>One script.</strong> A single deploy script enables the APIs, creates the dataset, tables and view, and ships the service.</li></ul>
+<h2 id="what-i-would-tell-a-startup-building-something-similar">What I would tell a startup building something similar</h2>
+<p>The pattern here is not specific to sales training. Any product where one model plays a role and another evaluates the result has the same three risks.</p>
+<p>Keep the actor and the judge apart. Shared context is how a judge ends up grading intentions instead of outcomes.</p>
+<p>Put the rubric in data. The people who own the standard should be able to read it and change it without reading Python.</p>
+<p>Test the judge first. If the grader cannot rank three hand-labeled examples in the right order, nothing built on top of it means anything.</p>]]></content:encoded>
+  </item>
+  <item>
+    <title>You don&#x27;t always need a frontier model. You need one that fits.</title>
+    <link>https://isaacattuah.com/writing/you-dont-always-need-a-frontier-model/</link>
+    <guid isPermaLink="true">https://isaacattuah.com/writing/you-dont-always-need-a-frontier-model/</guid>
+    <pubDate>Wed, 29 Jul 2026 12:00:00 +0000</pubDate>
+    <description>The short version of my Medium piece on right-sized, open-weight models: the real trade is generality against fit, and the only way to settle it is an evaluation on your own workload.</description>
+    <content:encoded><![CDATA[<p>I asked a 2-billion-parameter model for a 150-word LinkedIn post and got 105 words. I asked for 300 and got 210. Every run came back short.</p>
+<p>No leaderboard would have told me that. It took a small, representative evaluation on the task I cared about, and that one finding said more about whether the model fit my workload than any benchmark score.</p>
+<p>The full article builds a working app twice with Gemma 4, once against a hosted endpoint and once on a laptop. This page is the argument without the code.</p>
+<h2 id="the-trade-is-generality-against-fit">The trade is generality against fit</h2>
+<p>The usual framing is that big models are smart and small models are not. That stopped being useful a while ago. Small models have improved along with the frontier, and on bounded tasks a current small model can beat a much larger old one.</p>
+<p>A frontier model is a generalist. You pay for that breadth in compute, latency, money and a network trip to someone else&#x27;s data center. A small model deployed well is a specialist. It does fewer things, and in exchange it can give you properties a hosted API cannot.</p>
+<h2 id="four-properties-worth-paying-attention-to">Four properties worth paying attention to</h2>
+<ul><li><strong>Privacy.</strong> When inference runs inside a boundary you control, prompts and outputs can stay there. I have watched deals stall for months on data residency questions that get easier once that is true. You still owe the access controls, logging and governance.</li><li><strong>Cost.</strong> Self-hosting swaps per-token spend for capacity you pay for whether or not it is busy. For high-volume, low-complexity work such as classification or extraction, that can be cheaper to sustain. It is never free.</li><li><strong>Latency.</strong> No network round trip. Measure time to first token on the device you will ship on, not the one on your desk.</li><li><strong>Availability.</strong> This is the one I care about most. A tutoring app that needs a stable connection to a US-hosted API is not a product for a student in rural Ghana. A model that runs offline on a $200 device is a different product, and it reaches people the cloud version leaves out by design.</li></ul>
+<h2 id="a-rule-you-can-use-on-monday">A rule you can use on Monday</h2>
+<p>Reach for a frontier model when the task needs deep multi-step reasoning, very broad knowledge, or the best possible open-ended writing.</p>
+<p>Reach for a small one when the task is bounded, repetitive, sensitive, latency-critical, or has to run somewhere with poor connectivity. A lot of the production features I see teams build sit in that second list, and they are running on a frontier model because it was the default.</p>
+<p>So: <strong>use the smallest model that passes a representative evaluation, and escalate only when the workload makes you.</strong> The same app can have two right answers. In the article, the hosted demo uses a 26B mixture-of-experts model and the laptop build uses the 2B edge model, on purpose.</p>
+<h2 id="one-note-on-terms">One note on terms</h2>
+<p>Open source, open weights and local are three different things. Open-source software publishes code you can study and change. An open-weight model publishes trained parameters, often without the full training recipe. A local model is one you run on infrastructure you control, whatever its license. Gemma 4 is an Apache 2.0, open-weight family. Keeping those apart saves a lot of confused meetings.</p>]]></content:encoded>
+  </item>
+  <item>
+    <title>Notes from building the agent behind &quot;Four steps for startups to build multi-agent systems&quot;</title>
+    <link>https://isaacattuah.com/writing/four-steps-for-startups-multi-agent-systems/</link>
+    <guid isPermaLink="true">https://isaacattuah.com/writing/four-steps-for-startups-multi-agent-systems/</guid>
+    <pubDate>Fri, 14 Nov 2025 12:00:00 +0000</pubDate>
+    <description>My colleague Oluwamayowa Awojuyigbe wrote up a multi-agent build I helped architect. These are the four lessons from that project I now repeat to almost every startup I work with.</description>
+    <content:encoded><![CDATA[<p>The technical guide on the Google Cloud Blog was written by Oluwamayowa Awojuyigbe, a fellow Customer Engineer. I was one of the collaborators who helped architect and build the agent it describes. The article is his and you should read it for the full walkthrough and code. What follows is my own short list of what the project taught me.</p>
+<h2 id="1-decide-what-kind-of-build-this-is-before-writing-any-code">1. Decide what kind of build this is before writing any code</h2>
+<p>There are three honest options: use an agent someone already built, adopt a partner&#x27;s, or write your own. We wrote our own, code-first, because the workflow encoded logic specific to the team and we needed control over orchestration.</p>
+<p>Most startups skip this decision and discover it later, halfway through fighting a tool that was never meant for their case. Ten minutes on it up front is cheap.</p>
+<h2 id="2-let-the-model-talk-and-let-code-do-the-work">2. Let the model talk and let code do the work</h2>
+<p>The design that held up was a hybrid. A language model handles the conversational part, such as onboarding the user and collecting what it needs. Then it hands off to deterministic workflow steps that loop over the real work, with each step wrapped as a tool.</p>
+<p>The instinct to make everything an agent is strong and usually wrong. If a step has one correct way to run, it should be code. Save the model for the parts that need judgment.</p>
+<h2 id="3-isolate-state-or-your-agent-gets-worse-as-it-goes">3. Isolate state, or your agent gets worse as it goes</h2>
+<p>Our agent processed a list of companies in a loop. Left alone, context from the first company bled into the fifth, and quality dropped the longer it ran. The fix was to wrap the research pipeline as its own agent, called as a tool, so every item started with a clean context.</p>
+<p>If your agent is good on the first task and strange by the tenth, look here first.</p>
+<h2 id="4-treat-the-path-to-production-as-part-of-the-build">4. Treat the path to production as part of the build</h2>
+<p>A demo on localhost proves the idea. It does not prove you can ship it. We started from a production-grade project template, set up CI/CD with a manual approval before production, and deployed to a managed runtime that scales to zero when idle.</p>
+<p>None of that is exciting. All of it is the difference between an agent your team shows in a meeting and one your customers use.</p>
+<h2 id="why-i-keep-coming-back-to-this-project">Why I keep coming back to this project</h2>
+<p>Every one of these lessons is about structure, not model quality. The model was never the hard part. Knowing where to put the boundaries was.</p>]]></content:encoded>
+  </item>
+  <item>
+    <title>Vertex AI Studio or Google AI Studio? Pick by stage, not by feature list</title>
+    <link>https://isaacattuah.com/writing/vertex-ai-studio-vs-google-ai-studio/</link>
+    <guid isPermaLink="true">https://isaacattuah.com/writing/vertex-ai-studio-vs-google-ai-studio/</guid>
+    <pubDate>Mon, 08 Jul 2024 12:00:00 +0000</pubDate>
+    <description>A companion to my most-read piece for Google Cloud for Startups. The products have changed since 2024, but the way to choose between a prototyping sandbox and a production platform has not.</description>
+    <content:encoded><![CDATA[<p>In 2024 the question I heard most from founders was some version of: &quot;Google has two AI studios. Which one is mine?&quot; I wrote the answer down for Google Cloud for Startups, and it has since been read more than 9,700 times.</p>
+<p>A warning before the summary. The original compares specific features as they stood in July 2024, and both products have moved a long way since. Check the current documentation for what each one supports today. The decision underneath the feature table is the part that lasted.</p>
+<h2 id="two-tools-for-two-moments">Two tools for two moments</h2>
+<p><strong>Google AI Studio is where you find out if the idea works.</strong> It is a web-based sandbox built for speed. You sign in, try prompts, and have a prototype the same afternoon.</p>
+<p><strong>Vertex AI Studio is where you make it something customers can rely on.</strong> It sits inside Google Cloud, next to your data, your identity controls and your billing. It exists for the things a prototype does not need and a product cannot live without.</p>
+<h2 id="the-questions-that-decide-it">The questions that decide it</h2>
+<p>When a startup asks me which to use, I ask four things back.</p>
+<ol><li><strong>Who will use what you build?</strong> If the answer is &quot;me, this week,&quot; start in the sandbox. If it is &quot;thousands of customers,&quot; you need the production platform.</li><li><strong>What data goes through it?</strong> The moment real customer data is involved, enterprise security and compliance controls stop being optional.</li><li><strong>Will you need to adapt the model?</strong> Tuning, distillation and the MLOps tooling around them live on the platform side.</li><li><strong>How much traffic, and how predictable?</strong> Sandbox quotas are tight by design. Platform quotas are set per project and region, and can be raised.</li></ol>
+<h2 id="what-i-tell-founders-now">What I tell founders now</h2>
+<p>Start in the sandbox. Move when one of those four answers changes, and not before. The mistake I see is rarely choosing the wrong tool. It is staying in the prototype tool six months after the product became real, or building production infrastructure for an idea nobody has validated yet.</p>
+<p>Both tools let you export your work as code, so the move is a step and not a rewrite.</p>]]></content:encoded>
+  </item>
+</channel>
+</rss>

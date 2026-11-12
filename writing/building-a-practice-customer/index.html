@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Building a practice customer: persona agents, hidden objectives, and a judge you can trust | Isaac Attuah</title>
+  <meta name="description" content="How Customer Scenario Simulator II works: one agent plays a customer who is holding something back, a second grades the conversation against a rubric, and a small eval harness checks that the grader deserves to be believed.">
+  <link rel="canonical" href="https://isaacattuah.com/writing/building-a-practice-customer/">
+  <meta name="author" content="Isaac Attuah">
+  <meta property="og:site_name" content="Isaac Attuah">
+  <meta property="og:title" content="Building a practice customer: persona agents, hidden objectives, and a judge you can trust | Isaac Attuah">
+  <meta property="og:description" content="How Customer Scenario Simulator II works: one agent plays a customer who is holding something back, a second grades the conversation against a rubric, and a small eval harness checks that the grader deserves to be believed.">
+  <meta property="og:url" content="https://isaacattuah.com/writing/building-a-practice-customer/">
+  <meta property="og:image" content="https://isaacattuah.com/images/og.png">
+  <meta property="og:type" content="article">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Isaac Kofi Attuah, AI/ML Customer Engineer for startups at Google Cloud">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#f2f5f1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f211b" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="../../images/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../images/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="../../images/apple-touch-icon.png">
+  <link rel="manifest" href="../../site.webmanifest">
+  <link rel="alternate" type="application/rss+xml" title="Isaac Attuah: Writing" href="../../feed.xml">
+  <link rel="preload" href="../../assets/fonts/bricolage-grotesque-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <script src="../../assets/js/site.js" defer></script>
+  <meta property="article:published_time" content="2026-11-11">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../../">Isaac Attuah</a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="../../#systems">Work</a>
+        <a href="../../writing/" aria-current="page">Writing</a>
+        <a href="../../#about">About</a>
+        <a href="../../#contact">Contact</a>
+      </nav>
+      <div class="site-controls">
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="post">
+      <header class="post-header">
+        <div class="wrap">
+          <div class="post-column">
+            <h1>Building a practice customer: persona agents, hidden objectives, and a judge you can trust</h1>
+            <p class="post-meta"><time datetime="2026-11-11">November 11, 2026</time>, 6 minute read</p>
+            <p class="post-summary">How Customer Scenario Simulator II works: one agent plays a customer who is holding something back, a second grades the conversation against a rubric, and a small eval harness checks that the grader deserves to be believed.</p>
+            
+          </div>
+        </div>
+      </header>
+      <div class="wrap">
+        <div class="post-column">
+          <nav class="post-toc" aria-label="In this piece"><h2>In this piece</h2><ol><li><a href="#the-shape-of-the-system">The shape of the system</a></li><li><a href="#give-the-customer-something-to-hide">Give the customer something to hide</a></li><li><a href="#grade-with-a-rubric-and-demand-evidence">Grade with a rubric, and demand evidence</a></li><li><a href="#grade-the-grader">Grade the grader</a></li><li><a href="#keep-the-history-but-never-block-on-it">Keep the history, but never block on it</a></li><li><a href="#deployment-notes-that-cost-me-time">Deployment notes that cost me time</a></li><li><a href="#what-i-would-tell-a-startup-building-something-similar">What I would tell a startup building something similar</a></li></ol></nav>
+          <div class="prose">
+<p>Discovery is the skill that separates a good Customer Engineer from a product catalog with a calendar. It is also the hardest one to practice. You cannot rehearse on a real customer, and a colleague playing the customer already knows what you are fishing for.</p>
+<p>In 2023 I built a small Colab notebook that used PaLM&#x27;s <code>chat-bison</code> to role-play a customer. It was fun and not much more. The customer was a random adjective attached to a product area, and the feedback was one freeform prompt that mostly said &quot;good job.&quot;</p>
+<p>Customer Scenario Simulator II is the rebuild. This piece walks through the three decisions that made it useful: giving the customer something to hide, grading with a rubric instead of a vibe, and testing the grader before trusting it. The <a href="https://github.com/isaacattuah/Customer-Scenario-Simulator-v2" rel="noopener">code is on GitHub</a>.</p>
+<h2 id="the-shape-of-the-system">The shape of the system</h2>
+<p>There are two agents, one web service, and one warehouse.</p>
+<div class="table-scroll"><table><thead><tr><th>Part</th><th>What it does</th><th>Runs on</th></tr></thead><tbody><tr><td>Persona agent</td><td>Plays the customer, in character, turn by turn</td><td>Claude on Vertex AI</td></tr><tr><td>Coach agent</td><td>Reads the finished transcript and scores it</td><td>Claude on Vertex AI</td></tr><tr><td>API and UI</td><td>Sessions, chat, grading</td><td>FastAPI on Cloud Run</td></tr><tr><td>Skill history</td><td>Sessions, turns, scores, a leaderboard view</td><td>BigQuery</td></tr></tbody></table></div>
+<p>A session has three calls. <code>/session/new</code> creates a persona. <code>/chat</code> sends your message and returns the customer&#x27;s reply. <code>/grade</code> hands the whole conversation to the coach and returns a scorecard.</p>
+<p>The two agents never talk to each other. They have separate system prompts and separate jobs, and the only thing that passes between them is the transcript. That separation is the whole design. The persona must not know how it will be graded, or it starts performing for the rubric. The coach must not be in the conversation, or it stops being a judge.</p>
+<h2 id="give-the-customer-something-to-hide">Give the customer something to hide</h2>
+<p>The first version failed because the customer had no interior. Ask it what it needed and it told you. Real customers do not do that. The stated problem (&quot;we want to cut our inference bill&quot;) is rarely the real one (&quot;our CTO promised the board a launch date and we do not have the capacity&quot;).</p>
+<p>So each session starts by generating a structured persona card. Here is a simplified illustration of the idea, not the exact schema in the repository:</p>
+<pre><code class="language-json">{
+  &quot;company&quot;: &quot;Series B logistics startup, 60 engineers&quot;,
+  &quot;role&quot;: &quot;VP of Engineering&quot;,
+  &quot;personality&quot;: &quot;skeptical, short on time&quot;,
+  &quot;product_area&quot;: &quot;data analytics&quot;,
+  &quot;stated_goal&quot;: &quot;Cut warehouse spend before the next board meeting&quot;,
+  &quot;hidden_objectives&quot;: [
+    &quot;A migration last year went badly and the team distrusts lift-and-shift&quot;,
+    &quot;The real deadline is a customer audit in six weeks&quot;
+  ],
+  &quot;reveal_rules&quot;: &quot;Share a hidden objective only when asked a specific, open question about it&quot;
+}</code></pre>
+<p>The persona agent receives the card and the running conversation state as context on every turn. The person practicing never sees the hidden objectives. They have to earn them, the same way they would in a real meeting: by asking better questions.</p>
+<p>Two things made this work in practice.</p>
+<p><strong>Structure beats adjectives.</strong> &quot;Be a difficult customer&quot; produces theater. A card with a stated goal, specific hidden objectives and explicit rules for when to reveal them produces a customer who is consistent across twenty turns.</p>
+<p><strong>State is context, not memory.</strong> The service keeps session state itself and injects it on each call. The model is never asked to remember what it already revealed. It is told.</p>
+<h2 id="grade-with-a-rubric-and-demand-evidence">Grade with a rubric, and demand evidence</h2>
+<p>When you finish, the coach agent gets three things: the full transcript, the hidden objectives, and a rubric. The rubric lives in a YAML file and is the single source of truth for what &quot;good&quot; means. Changing how Customer Engineers are assessed is a change to that file, not to a prompt buried in code.</p>
+<p>The coach returns structured JSON: a score for each rubric dimension, and for each score, the turns in the transcript that justify it. Then the scorecard reveals what the customer was hiding, so you can see which objective you found and which one walked out of the room with them.</p>
+<p>The evidence requirement matters more than the score. A grader that says &quot;discovery: 3 out of 5&quot; teaches you nothing. A grader that says &quot;3 out of 5, because in turn 4 you asked about timeline but accepted the first answer, and in turn 9 you pitched before confirming the constraint&quot; gives you something to do differently tomorrow.</p>
+<p>Structured output from a model fails occasionally, so the service validates the response against a schema and allows exactly one repair attempt if parsing fails. One retry catches almost everything. Unlimited retries hide a prompt problem you should fix instead.</p>
+<h2 id="grade-the-grader">Grade the grader</h2>
+<p>This is the part most LLM-as-judge projects skip, and it is the part I would keep if I had to throw the rest away.</p>
+<p>A judge is only useful if it is consistent and calibrated. So the repository includes a small harness with hand-labeled golden transcripts: one strong, one mixed, one weak. Each has an expected score range written down in advance. The harness runs every transcript through the judge several times and checks three things:</p>
+<ol><li><strong>Consistency.</strong> Does the same transcript get roughly the same score on every run?</li><li><strong>Calibration.</strong> Do the scores land inside the range a human said they should?</li><li><strong>Ranking.</strong> Does strong beat mixed, and mixed beat weak, every time?</li></ol>
+<pre><code class="language-bash">python -m evals.judge_consistency --runs 3</code></pre>
+<p>If you change the rubric, the coach prompt or the model, you rerun this before you believe a single scorecard. It is the same discipline as a unit test, pointed at the one component whose output everyone will take on faith.</p>
+<h2 id="keep-the-history-but-never-block-on-it">Keep the history, but never block on it</h2>
+<p>Every session, turn and score is written to BigQuery, with a leaderboard view on top. That turns a toy into a training tool. You can ask whether your discovery scores improved over a month, or which rubric dimension a whole team is weakest on.</p>
+<p>Persistence is fail-soft. If BigQuery is unreachable, the conversation carries on and the app says nothing dramatic. Session state lives in memory and BigQuery is the durable record. For a practice tool that is the right trade: losing a row of analytics is cheap, and killing someone&#x27;s session in the middle of a hard conversation is not. You can also switch BigQuery off entirely with one environment variable and run the full loop on a laptop.</p>
+<h2 id="deployment-notes-that-cost-me-time">Deployment notes that cost me time</h2>
+<ul><li><strong>Scale to zero.</strong> The service is a source-based Cloud Run deploy. A practice tool is idle most of the day and should cost nothing while it is.</li><li><strong>No keys in code.</strong> Authentication is Application Default Credentials end to end.</li><li><strong>Use <code>/health</code>, not only <code>/healthz</code>.</strong> On Cloud Run the Google Front End intercepts <code>/healthz</code> before it reaches your container. I registered both paths and point checks at <code>/health</code>.</li><li><strong>One script.</strong> A single deploy script enables the APIs, creates the dataset, tables and view, and ships the service.</li></ul>
+<h2 id="what-i-would-tell-a-startup-building-something-similar">What I would tell a startup building something similar</h2>
+<p>The pattern here is not specific to sales training. Any product where one model plays a role and another evaluates the result has the same three risks.</p>
+<p>Keep the actor and the judge apart. Shared context is how a judge ends up grading intentions instead of outcomes.</p>
+<p>Put the rubric in data. The people who own the standard should be able to read it and change it without reading Python.</p>
+<p>Test the judge first. If the grader cannot rank three hand-labeled examples in the right order, nothing built on top of it means anything.</p>
+          </div>
+          <nav class="pager" aria-label="More writing"><a class="pager-older" href="../you-dont-always-need-a-frontier-model/"><span>Older</span>You don&#x27;t always need a frontier model. You need one that fits.</a></nav>
+          <p class="post-end"><a href="../">All writing</a></p>
+        </div>
+      </div>
+    </article>
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <h2 id="contact-title">Building with agents, or stuck choosing a model? Write to me.</h2>
+        <a class="contact-email" href="mailto:isaacattuah@gmail.com">isaacattuah@gmail.com</a>
+        <ul class="contact-links">
+          <li><a href="https://www.linkedin.com/in/isaacattuah/" rel="noopener me">LinkedIn</a></li>
+          <li><a href="https://github.com/isaacattuah" rel="noopener me">GitHub</a></li>
+          <li><a href="https://medium.com/@isaacattuah" rel="noopener me">Medium</a></li>
+          <li><a href="https://www.quora.com/profile/Isaac-Attuah-1" rel="noopener me">Quora</a></li>
+          <li><a href="https://docs.google.com/document/d/1EyAMBDKFZllOAJzON1glSD8Yo8AhkFOQifTpaNQ_IcY/edit?usp=sharing" rel="noopener">Resume</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <section class="time-machine" aria-labelledby="tm-title">
+        <h2 id="tm-title">Time machine: every version of this site still runs. Each opens in a new tab</h2>
+        <ol class="versions">
+          <li><a href="../../legacy/v0/" target="_blank" rel="noopener">v0, 2019</a><span>Hand-written HTML and tables</span></li>
+          <li><a href="../../legacy/v1/" target="_blank" rel="noopener">v1, 2020</a><span>The student portfolio</span></li>
+          <li><a href="../../legacy/v2/" target="_blank" rel="noopener">v2, 2025</a><span>Single page with dark mode</span></li>
+          <li aria-current="true"><strong>v3, 2026</strong><span>You are here</span></li>
+        </ol>
+      </section>
+      <div class="footer-meta">
+        <p>&copy; <span data-year>2026</span> Isaac Kofi Attuah. Opinions are my own, not my employer's.</p>
+        <p><a href="../../feed.xml">RSS feed</a></p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

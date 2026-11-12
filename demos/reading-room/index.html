@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" data-demo="reading-room">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reading Room direction | Isaac Attuah</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="../../images/favicon.ico">
+  <style>
+    @font-face { font-family: "Newsreader"; src: url("../fonts/newsreader-var.woff2") format("woff2"); font-weight: 200 800; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Newsreader"; src: url("../fonts/newsreader-var-italic.woff2") format("woff2"); font-weight: 200 800; font-style: italic; font-display: swap; }
+    :root { --page: #ffffff; --ink: #1c1a1a; --soft: #6a6462; --rule: #e3dedc; --wine: #7a1f2b; }
+    @media (prefers-color-scheme: dark) { :root { --page: #1a1616; --ink: #efe9e6; --soft: #a79f9b; --rule: #3a3231; --wine: #e79aa4; } }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--page); color: var(--ink); font: 400 1.25rem/1.62 "Newsreader", "Iowan Old Style", Georgia, serif; }
+    a { color: var(--wine); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+    a:hover { text-decoration-thickness: 2px; }
+    a:focus-visible { outline: 2px solid var(--wine); outline-offset: 3px; }
+    main, header, footer { max-width: 39rem; margin: 0 auto; padding-inline: 1.5rem; }
+    header { padding-top: clamp(2.5rem, 8vw, 6rem); display: flex; align-items: center; gap: 1.1rem; }
+    header img { width: 4.25rem; height: 4.25rem; border-radius: 50%; }
+    header p { margin: 0; line-height: 1.3; }
+    header strong { font-weight: 600; font-size: 1.375rem; display: block; }
+    header span { color: var(--soft); font-size: 1.0625rem; }
+    h1 { font-size: clamp(2.2rem, 1.5rem + 3vw, 3.25rem); font-weight: 500; line-height: 1.08; letter-spacing: -0.015em; margin: clamp(2rem, 6vw, 3.5rem) 0 1.5rem; text-wrap: balance; }
+    h2 { font-size: 1.0625rem; font-weight: 600; font-style: italic; color: var(--soft); margin: clamp(3rem, 8vw, 4.5rem) 0 1rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--rule); }
+    p { margin: 0 0 1.1em; }
+    .essays { list-style: none; margin: 0; padding: 0; }
+    .essays li { padding-block: 1.15rem; border-bottom: 1px solid var(--rule); }
+    .essays a { font-size: 1.5rem; font-weight: 500; line-height: 1.2; text-decoration: none; color: var(--ink); display: block; }
+    .essays a:hover { color: var(--wine); }
+    .essays p { margin: 0.4rem 0 0; font-size: 1.125rem; line-height: 1.5; color: var(--soft); }
+    .essays time { font-style: italic; }
+    .plain { margin: 0; padding-left: 1.2rem; }
+    .plain li { margin-bottom: 0.5rem; }
+    .plain li::marker { color: var(--wine); }
+    footer { padding-block: clamp(3rem, 8vw, 5rem); color: var(--soft); font-size: 1.0625rem; }
+    footer p { margin: 0 0 0.4rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../../images/portrait-320.webp" width="320" height="320" alt="Isaac Attuah">
+    <p><strong>Isaac Kofi Attuah</strong><span>AI/ML Customer Engineer, Startups, Google Cloud. Atlanta.</span></p>
+  </header>
+  <main>
+    <h1>I write about what it takes to get AI out of the demo and into production.</h1>
+    <p>My day job is helping AI-native startups make three decisions well: how their agents fit together, which model earns its cost, and whether the capacity will be there when they launch. These are my notes from that work.</p>
+
+    <h2>Essays</h2>
+    <ul class="essays">
+      <li><a href="../../writing/building-a-practice-customer/">Building a practice customer: persona agents, hidden objectives, and a judge you can trust</a><p><time datetime="2026-11-11">November 2026.</time> How one agent plays a customer who is holding something back, and how to check that the agent grading you deserves to be believed.</p></li>
+      <li><a href="../../writing/you-dont-always-need-a-frontier-model/">You don't always need a frontier model. You need one that fits.</a><p><time datetime="2026-07-29">July 2026.</time> The real trade is generality against fit, and only an evaluation on your own workload settles it.</p></li>
+      <li><a href="../../writing/four-steps-for-startups-multi-agent-systems/">Notes from building the agent behind "Four steps for startups to build multi-agent systems"</a><p><time datetime="2025-11-14">November 2025.</time> Four lessons from a multi-agent build I helped architect.</p></li>
+      <li><a href="../../writing/vertex-ai-studio-vs-google-ai-studio/">Vertex AI Studio or Google AI Studio? Pick by stage, not by feature list</a><p><time datetime="2024-07-08">July 2024.</time> A sandbox and a production platform are tools for two different moments.</p></li>
+    </ul>
+
+    <h2>Work</h2>
+    <p>I work across four layers of an AI product: agents, models, capacity and data. In practice that means Vertex AI Agent Builder and the Gemini API, Model Garden and Claude on Vertex AI, Provisioned Throughput on GKE and Cloud Run, and BigQuery, Spanner and Looker underneath.</p>
+    <p>I built <a href="https://github.com/isaacattuah/Customer-Scenario-Simulator-v2" rel="noopener">Customer Scenario Simulator II</a>, a multi-agent practice tool for Customer Engineers. I led two engineers on an internal compliance assistant, built with Gemini, Apps Script and Google Chat, that took five regional pods to 98 to 100 percent compliance and gave back about 900 hours a year. Through Google.org I coached in the 2026 Accelerator for AI in government, advising Code for America, and in 2024 helped build a business-licensing chatbot for the 3,000+ businesses of Macon-Bibb County. I also maintain a <a href="https://github.com/isaacattuah/ci-cd-pipeline" rel="noopener">Terraform CI/CD kit</a> for GKE and Cloud Run.</p>
+    <p>Most of what I learn becomes teaching material. My onboarding labs have been used by more than 4,600 Customer Engineers, my certification guides by more than 3,000 colleagues, and my Professional ML Engineer study guide by more than 360 engineers. In 2026 I co-led Agentic AI workshops for over 550 people at Atlanta Tech Week.</p>
+
+    <h2>Credentials</h2>
+    <ul class="plain">
+      <li>MSc. Artificial Intelligence, University of the Cumberlands, 2026. GPA 4.0.</li>
+      <li>BSc. Computer Science, University of Miami, 2022. Cum Laude, GPA 3.907. Prior study at KNUST.</li>
+      <li>Google Cloud: <a href="https://www.credly.com/badges/81c1ce43-d8e4-4efe-9da1-9f3ef0329c97/public_url" rel="noopener">Professional Machine Learning Engineer</a>, <a href="https://www.credly.com/badges/06cd3ca0-5eff-4865-aec7-f7851a70e32b/public_url" rel="noopener">Professional Cloud Architect</a>, <a href="https://www.credly.com/badges/c6a411d0-c5ef-4c21-9de0-02b64d5d2756/public_url" rel="noopener">Professional Data Engineer</a>, <a href="https://www.credly.com/badges/20f67abf-6c94-4974-910d-6a0dbf2090a2/public_url" rel="noopener">Associate Cloud Engineer</a>.</li>
+    </ul>
+  </main>
+  <footer>
+    <p>Write to me at <a href="mailto:isaacattuah@gmail.com">isaacattuah@gmail.com</a>.</p>
+    <p>Elsewhere: <a href="https://www.linkedin.com/in/isaacattuah/" rel="noopener">LinkedIn</a>, <a href="https://github.com/isaacattuah" rel="noopener">GitHub</a>, <a href="https://medium.com/@isaacattuah" rel="noopener">Medium</a>, <a href="https://www.quora.com/profile/Isaac-Attuah-1" rel="noopener">Quora</a>, <a href="https://docs.google.com/document/d/1EyAMBDKFZllOAJzON1glSD8Yo8AhkFOQifTpaNQ_IcY/edit?usp=sharing" rel="noopener">resume</a>.</p>
+  </footer>
+  <script src="../switcher.js"></script>
+</body>
+</html>
